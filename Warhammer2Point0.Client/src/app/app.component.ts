@@ -11,6 +11,7 @@ import { HttpService } from './http.service';
 export class AppComponent {
   constructor(private http: HttpService){
     http.weatherFunction().subscribe(x => {console.log(x)})
+    http.battleFunction().subscribe(x => {console.log(x)})
   }
   title = 'Client';
 }

@@ -6,18 +6,18 @@ public enum CharacterSkill {
 };
 
 public enum CharacterAbility {
-    Bijatyka,
+    Bijatyka = 0,
     // BlyskawicznePrzeladowanie,
-    BlyskawicznyBlok,
+    BlyskawicznyBlok = 1,
     // BronNaturalna,
-    Oburecznosc,
-    SilnyCios,
-    StrzalPrecyzyjny,
-    StrzalPrzebijajacy,
+    Oburecznosc = 2,
+    SilnyCios = 3,
+    StrzalPrecyzyjny = 4,
+    StrzalPrzebijajacy = 5,
 };
 
 public class Character {
-    public string CharacterName { get; set; } = "";
+    public string Name { get; set; } = "";
     public CharacterTeam Team { get; set; }
 
     //stats
