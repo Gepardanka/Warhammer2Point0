@@ -6,10 +6,10 @@ public class UnarmedTests{
     [Fact]
     public void UnarmedAttackWWTest(){
         Models.Character defending = new(){CurrentZyw = 1};
-        Models.Character attacking = new() {WW = 40};
+        Models.Character attacking = new() {CurrentZyw = 1,WW = 40};
         FakeDiceRolls fakeDiceRolls = new(){IntsD100 = [90]};
         UnarmedAttack unarmedAttack = new(attacking, defending, fakeDiceRolls, 0);
-        unarmedAttack.MakeAttack(null);
+        unarmedAttack.MakeAttack(null, new Round{});
         Assert.Equal(1, defending.CurrentZyw);
     }
     [Fact]
@@ -18,7 +18,7 @@ public class UnarmedTests{
         Models.Character attacking = new(){WW = 40, S = 4};
         FakeDiceRolls fakeDiceRolls = new(){IntsD100 = [30], IntsD10 = [2]};
         UnarmedAttack unarmedAttack = new(attacking, defending, fakeDiceRolls, 0);
-        unarmedAttack.MakeAttack(null);
+        unarmedAttack.MakeAttack(null, new Round{});
         Assert.Equal(0, defending.CurrentZyw);
     }
     [Fact]
@@ -27,7 +27,7 @@ public class UnarmedTests{
         Models.Character attacking = new(){WW = 40, S = 4};
         FakeDiceRolls fakeDiceRolls = new(){IntsD100 = [30], IntsD10 = [2]};
         UnarmedAttack unarmedAttack = new(attacking, defending, fakeDiceRolls, 0);
-        unarmedAttack.MakeAttack(null);
+        unarmedAttack.MakeAttack(null, new Round{});
         Assert.Equal(1, defending.CurrentZyw);        
     }
     [Fact]
@@ -40,7 +40,7 @@ public class UnarmedTests{
         Models.Character attacking = new(){WW = 50, S = 4};
         FakeDiceRolls fakeDiceRolls = new(){IntsD100 = [1], IntsD10 = [2]};
         UnarmedAttack unarmedAttack = new(attacking, defending, fakeDiceRolls, 0);
-        unarmedAttack.MakeAttack(null);
+        unarmedAttack.MakeAttack(null, new Round{});
         Assert.Equal(1, defending.CurrentZyw);         
     }
     [Fact]
@@ -53,7 +53,7 @@ public class UnarmedTests{
         Models.Character attacking = new(){WW = 90, S = 4};
         FakeDiceRolls fakeDiceRolls = new(){IntsD100 = [65], IntsD10 = [2]};
         UnarmedAttack unarmedAttack = new(attacking, defending, fakeDiceRolls, 0);
-        unarmedAttack.MakeAttack(null);
+        unarmedAttack.MakeAttack(null, new Round{});
         Assert.Equal(1, defending.CurrentZyw);         
     }
     [Fact]
@@ -66,7 +66,7 @@ public class UnarmedTests{
         Models.Character attacking = new(){WW = 90, S = 4};
         FakeDiceRolls fakeDiceRolls = new(){IntsD100 = [10], IntsD10 = [3]};
         UnarmedAttack unarmedAttack = new(attacking, defending, fakeDiceRolls, 0);
-        unarmedAttack.MakeAttack(null);
+        unarmedAttack.MakeAttack(null, new Round{});
         Assert.Equal(1, defending.CurrentZyw);          
     }
     [Fact]
@@ -80,7 +80,7 @@ public class UnarmedTests{
         Models.Character attacking = new(){WW = 90, S = 4};
         FakeDiceRolls fakeDiceRolls = new(){IntsD100 = [10, 10], IntsD10 = [2]};
         UnarmedAttack unarmedAttack = new(attacking, defending, fakeDiceRolls, 0);
-        unarmedAttack.MakeAttack(null);
+        unarmedAttack.MakeAttack(null, new Round{});
         Assert.Equal(1, defending.CurrentZyw);
         Assert.False(defending.IsDodging);         
     }
@@ -95,7 +95,7 @@ public class UnarmedTests{
         Models.Character attacking = new(){WW = 90, S = 4};
         FakeDiceRolls fakeDiceRolls = new(){IntsD100 = [10, 91], IntsD10 = [2]};
         UnarmedAttack unarmedAttack = new(attacking, defending, fakeDiceRolls, 0);
-        unarmedAttack.MakeAttack(null);
+        unarmedAttack.MakeAttack(null, new Round{});
         Assert.Equal(0, defending.CurrentZyw);
         Assert.False(defending.IsDodging);          
     }
@@ -114,7 +114,7 @@ public class UnarmedTests{
         Models.Character attacking = new(){WW = 90, S = 4};
         FakeDiceRolls fakeDiceRolls = new(){IntsD100 = [10, 10], IntsD10 = [2]};
         UnarmedAttack unarmedAttack = new(attacking, defending, fakeDiceRolls, 0);
-        unarmedAttack.MakeAttack(null);
+        unarmedAttack.MakeAttack(null, new Round{});
         Assert.Equal(1, defending.CurrentZyw);
         Assert.False(defending.IsParring);
     }
@@ -132,7 +132,7 @@ public class UnarmedTests{
         Models.Character attacking = new(){WW = 90, S = 4};
         FakeDiceRolls fakeDiceRolls = new(){IntsD100 = [10, 91], IntsD10 = [2]};
         UnarmedAttack unarmedAttack = new(attacking, defending, fakeDiceRolls, 0);
-        unarmedAttack.MakeAttack(null);
+        unarmedAttack.MakeAttack(null,new Round{});
         Assert.Equal(0, defending.CurrentZyw);
         Assert.False(defending.IsParring);
     }
@@ -148,7 +148,7 @@ public class UnarmedTests{
 
         FakeDiceRolls fakeDiceRolls = new(){IntsD100 = [40], IntsD10 = [1]};
         UnarmedAttack unarmedAttack = new(attacking, defending, fakeDiceRolls, 0);
-        unarmedAttack.MakeAttack(null);
+        unarmedAttack.MakeAttack(null, new Round{});
         Assert.Equal(0, defending.CurrentZyw);        
     }
     [Fact]
@@ -161,7 +161,7 @@ public class UnarmedTests{
             S = 4};
         FakeDiceRolls fakeDiceRolls = new(){IntsD100 = [60], IntsD10 = [2]};
         UnarmedAttack unarmedAttack = new(attacking, defending, fakeDiceRolls, 10);
-        unarmedAttack.MakeAttack(null);
+        unarmedAttack.MakeAttack(null, new Round{});
         Assert.Equal(0, defending.CurrentZyw);         
     }
     [Fact]
@@ -174,7 +174,7 @@ public class UnarmedTests{
             S = 4};
         FakeDiceRolls fakeDiceRolls = new(){IntsD100 = [60], IntsD10 = [2]};
         UnarmedAttack unarmedAttack = new(attacking, defending, fakeDiceRolls, 10);
-        unarmedAttack.MakeAttack(null);
+        unarmedAttack.MakeAttack(null, new Round{});
         Assert.Equal(1, defending.CurrentZyw);         
     }
 }

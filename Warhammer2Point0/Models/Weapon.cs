@@ -1,6 +1,7 @@
 namespace WarhammerFightSimulator.Models;
 
 public class Weapon : IEquipmentItem {
+    public string WeaponName { get; set; } = "";
     public int Modifier { get; set; }
     public virtual EquipmentItemType EquipmentItemType { get;}
     public List<WeaponTrait> WeaponTraits { get; set; } = [];
@@ -28,6 +29,5 @@ public enum WeaponTrait{
     PrzebijajacyZbroje = 4,
     Szybki = 5,
     Unieruchamiajacy = 6,
-    Wywazony = 7,
-    Tarcza = 8
+    Wywazony = 7
 }

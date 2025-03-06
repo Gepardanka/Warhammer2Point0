@@ -7,8 +7,10 @@ public interface IAttackSetUp{
 
 public class AttackSetUp : IAttackSetUp{
     private readonly IDiceRolls _diceRolls;
-    public AttackSetUp(IDiceRolls diceRolls){
+    private RoundHistory _roundHistory;
+    public AttackSetUp(IDiceRolls diceRolls, RoundHistory roundHistory){
         _diceRolls = diceRolls;
+        _roundHistory = roundHistory;
     }
     public void ChooseAttack(Character attacking, Character defending, int wwMod)
     {
@@ -54,7 +56,8 @@ public class AttackSetUp : IAttackSetUp{
 
     private void DoAttack(Attack attackType, Weapon? attackingWeapon, int attacks){
         for(int i = 0; i < attacks; i++){
-            attackType.MakeAttack(attackingWeapon);
+            _roundHistory.Rounds.Add(new Round{});
+            attackType.MakeAttack(attackingWeapon, _roundHistory.Rounds.Last());
         }
     }
 }
