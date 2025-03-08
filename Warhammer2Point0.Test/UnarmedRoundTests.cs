@@ -5,13 +5,11 @@ namespace WarhammerFightSimulator.Tests;
 public class RoundTests{
     [Fact]
     public void UnarmedRoundMiss(){
-        Models.Round round = new Models.Round{};
-        Models.Character defending = new(){CurrentZyw = 1};
+        Models.Character defending = new(){CurrentZyw = 1, Guid = Guid.NewGuid()};
         Models.Character attacking = new() {WW = 40};
         FakeDiceRolls fakeDiceRolls = new(){IntsD100 = [90]};
         Attack attack = new UnarmedAttack(attacking, defending, fakeDiceRolls, 0);
 
-        attack.MakeAttack(null,round);
 
         Models.Round expectedRound = new Models.Round{
             AttackingWeaponName = "Unarmed",
@@ -20,18 +18,16 @@ public class RoundTests{
             DefendingCharCurrentHP = 1
         };
 
-        Assert.Equivalent(expectedRound, round);
+        Assert.Equivalent(expectedRound, attack.MakeAttack(null));
     }
 
     [Fact]
     public void UnarmedRoundHit(){
-        Models.Round round = new Models.Round{};
-        Models.Character defending = new(){CurrentZyw = 1, Wt = 1};
+        Models.Character defending = new(){CurrentZyw = 1, Wt = 1, Guid = Guid.NewGuid()};
         Models.Character attacking = new(){WW = 40, S = 4};
         FakeDiceRolls fakeDiceRolls = new(){IntsD100 = [30], IntsD10 = [2]};
         Attack attack = new UnarmedAttack(attacking, defending, fakeDiceRolls, 0);
 
-        attack.MakeAttack(null,round);
 
         Models.Round expectedRound = new Models.Round{
             AttackingWeaponName = "Unarmed",
@@ -40,12 +36,11 @@ public class RoundTests{
             DefendingCharCurrentHP = 0
         };
 
-        Assert.Equivalent(expectedRound, round);
+        Assert.Equivalent(expectedRound, attack.MakeAttack(null));
     }
 
     [Fact]
     public void UnarmedRoundParry(){
-        Models.Round round = new Models.Round{};
         Models.Character defending = new(){
             CurrentZyw = 1, 
             Wt = 1,
@@ -53,12 +48,12 @@ public class RoundTests{
             Hands = new Models.Hands{
                 RightHand = new Models.MeleeWeapon{
                     Modifier = 0}},
-            IsParring = true
+            IsParring = true,
+            Guid = Guid.NewGuid(),
             };
         Models.Character attacking = new(){WW = 90, S = 4};
         FakeDiceRolls fakeDiceRolls = new(){IntsD100 = [10, 10], IntsD10 = [2]};
         UnarmedAttack unarmedAttack = new(attacking, defending, fakeDiceRolls, 0);
-        unarmedAttack.MakeAttack(null, round);
 
         Models.Round expectedRound = new Models.Round{
             AttackingWeaponName = "Unarmed",
@@ -67,12 +62,11 @@ public class RoundTests{
             DefendingCharCurrentHP = 1
         };
 
-        Assert.Equivalent(expectedRound, round);
+        Assert.Equivalent(expectedRound, unarmedAttack.MakeAttack(null));
     }
 
     [Fact]
      public void UnarmedRuondFailedParry(){
-        Models.Round round = new Models.Round{};
         Models.Character defending = new(){
             CurrentZyw = 1, 
             Wt = 1,
@@ -80,12 +74,12 @@ public class RoundTests{
             Hands = new Models.Hands{
                 RightHand = new Models.MeleeWeapon{
                     Modifier = 0}},
+            Guid = Guid.NewGuid(),
             IsParring = true
             };
         Models.Character attacking = new(){WW = 90, S = 4};
         FakeDiceRolls fakeDiceRolls = new(){IntsD100 = [10, 91], IntsD10 = [2]};
         UnarmedAttack unarmedAttack = new(attacking, defending, fakeDiceRolls, 0);
-        unarmedAttack.MakeAttack(null,round);
 
         Models.Round expectedRound = new Models.Round{
             AttackingWeaponName = "Unarmed",
@@ -94,22 +88,21 @@ public class RoundTests{
             DefendingCharCurrentHP = 0
         };
 
-        Assert.Equivalent(expectedRound, round);
+        Assert.Equivalent(expectedRound, unarmedAttack.MakeAttack(null));
     }
 
     [Fact]
     public void UnarmedDodge(){
-        Models.Round round = new Models.Round{};
         Models.Character defending = new(){
             CurrentZyw = 1, 
             Wt = 1,
             Zr = 90,
+            Guid = Guid.NewGuid(),
             Skills = new Dictionary<Models.CharacterSkill, int>{{Models.CharacterSkill.Unik, 0}}
             };
         Models.Character attacking = new(){WW = 90, S = 4};
         FakeDiceRolls fakeDiceRolls = new(){IntsD100 = [10, 10], IntsD10 = [2]};
         UnarmedAttack unarmedAttack = new(attacking, defending, fakeDiceRolls, 0);
-        unarmedAttack.MakeAttack(null, round);
 
         Models.Round expectedRound = new Models.Round{
             AttackingWeaponName = "Unarmed",
@@ -118,22 +111,21 @@ public class RoundTests{
             DefendingCharCurrentHP = 1
         };
 
-        Assert.Equivalent(expectedRound, round);    
+        Assert.Equivalent(expectedRound, unarmedAttack.MakeAttack(null));    
     }
 
     [Fact]
     public void UnarmedFailedDodge(){
-        Models.Round round = new Models.Round{};
         Models.Character defending = new(){
             CurrentZyw = 1, 
             Wt = 1,
             Zr = 90,
+            Guid = Guid.NewGuid(),
             Skills = new Dictionary<Models.CharacterSkill, int>{{Models.CharacterSkill.Unik, 0}}
             };
         Models.Character attacking = new(){WW = 90, S = 4};
         FakeDiceRolls fakeDiceRolls = new(){IntsD100 = [10, 91], IntsD10 = [2]};
         UnarmedAttack unarmedAttack = new(attacking, defending, fakeDiceRolls, 0);
-        unarmedAttack.MakeAttack(null, round);
 
         Models.Round expectedRound = new Models.Round{
             AttackingWeaponName = "Unarmed",
@@ -142,6 +134,6 @@ public class RoundTests{
             DefendingCharCurrentHP = 0
         };
 
-        Assert.Equivalent(expectedRound, round); 
+        Assert.Equivalent(expectedRound, unarmedAttack.MakeAttack(null)); 
     }
 }

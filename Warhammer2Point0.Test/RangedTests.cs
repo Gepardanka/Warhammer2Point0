@@ -12,7 +12,7 @@ public class RangedTests{
             CurrentZyw = 1
         };
         Services.RangedAttack attack= new(attacking, defending, fakeDiceRolls);
-        attack.MakeAttack(attacking.Hands.RightHand, new Models.Round{});
+        attack.MakeAttack(attacking.Hands.RightHand);
         Assert.Equal(1, defending.CurrentZyw);
     }
 }
