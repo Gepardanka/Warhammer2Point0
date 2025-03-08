@@ -17,6 +17,7 @@ public enum CharacterAbility {
 };
 
 public class Character {
+    public Guid Guid { get; set; }
     public string Name { get; set; } = "";
     public CharacterTeam Team { get; set; }
 

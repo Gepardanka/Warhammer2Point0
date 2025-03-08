@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using WarhammerFightSimulator.Models;
 namespace WarhammerFightSimulator.Services;
 public class FightSimulator
@@ -6,23 +5,31 @@ public class FightSimulator
     readonly List<Character> _characters;
     readonly IDiceRolls _diceRolls;
     readonly IAttackSetUp _attackSetUp;
-    public FightSimulator(List<Character> characters, IDiceRolls diceRolls, IAttackSetUp attackSetUp)
+    RoundHistory _roundHistory;
+    public FightSimulator(List<Character> characters, IDiceRolls diceRolls, IAttackSetUp attackSetUp, RoundHistory roundHistory)
     {
+        _roundHistory = roundHistory;
         _characters = characters;
         _diceRolls = diceRolls;
         _attackSetUp = attackSetUp;
     }
-    public CharacterTeam Fight()
+    public RoundHistory Fight()
     {
         List<Character> inBattle = GroupLogic.Initiative(_characters, _diceRolls).ToList();
         List<List<Character>> groups = GroupLogic.MakeGroups(inBattle);
+        _roundHistory.TeamA = inBattle.Where(x => x.Team == CharacterTeam.TeamA).Select(CharacterDTO.CharacterToDTO).ToList();
+        _roundHistory.TeamB = inBattle.Where(x => x.Team == CharacterTeam.TeamB).Select(CharacterDTO.CharacterToDTO).ToList();
+
         int stop = 10000;
         for (int i = 0; i < stop; i++)
         {
             for (int j = 0; j < inBattle.Count; j++)
             {
                 CharacterTeam? winner = CheckForWinner(inBattle);
-                if(winner.HasValue){return (CharacterTeam)winner; }
+                if(winner.HasValue){
+                    _roundHistory.WinnerTeam = (CharacterTeam)winner;
+                    return _roundHistory;
+                }
 
                 Character attacking = inBattle[j];
                 List<Character> group = groups.First(x => x.Contains(attacking));
