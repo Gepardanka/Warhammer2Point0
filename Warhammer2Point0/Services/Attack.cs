@@ -121,12 +121,12 @@ public class MeleeAttack(Character attacking, Character defending, IDiceRolls di
 {
     public override void MakeAttack(IEquipmentItem? attackingHand, Round round)
     {
-        round.AttackingWeaponName = "Melee";
+        MeleeWeapon attackingWeapon = (MeleeWeapon)attackingHand!;
+        round.AttackingWeaponName = attackingWeapon.WeaponName;
         round.DefendingCharCurrentHP = _defending.CurrentZyw;
         int roll = _diceRolls.D100();
         if(_attacking.WW + _wwMod < roll){round.HitSuccessFailReason = HitSuccessMissReason.Miss; return;}
 
-        MeleeWeapon attackingWeapon = (MeleeWeapon)attackingHand!;
         bool dodgeOrParry = DidDodgeParry(attackingWeapon, round);
 
         if(dodgeOrParry){return;}

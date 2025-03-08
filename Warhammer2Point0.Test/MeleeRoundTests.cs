@@ -10,6 +10,7 @@ public class MeleeRoundTests{
             WW = 10,
             Hands = new Hands{
                 RightHand = new MeleeWeapon{
+                    WeaponName = "Sword"
         }}};
         Character defending = new(){CurrentZyw = 1};
         FakeDiceRolls fakeDiceRolls = new(){IntsD100 = [90]};
@@ -17,7 +18,7 @@ public class MeleeRoundTests{
         meleeAttack.MakeAttack(attacking.Hands.RightHand, round);
 
         Round expectedRound = new Round{
-            AttackingWeaponName = "Melee",
+            AttackingWeaponName = "Sword",
             HitSuccessFailReason = HitSuccessMissReason.Miss,
             DefendingCharID = defending.Guid,
             DefendingCharCurrentHP = 1
@@ -41,7 +42,7 @@ public class MeleeRoundTests{
         meleeAttack.MakeAttack(attacking.Hands.RightHand, round);
 
         Round expectedRound = new Round{
-            AttackingWeaponName = "Melee",
+            AttackingWeaponName = "",
             HitSuccessFailReason = HitSuccessMissReason.Hit,
             DefendingCharID = defending.Guid,
             DefendingCharCurrentHP = 0

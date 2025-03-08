@@ -38,12 +38,14 @@ public class CharacterDTO
             RightHand = character.Hands.RightHand == null ? null :
              new WeaponDTO
              {
+                 WeaponName = RightHandWeapon!.WeaponName,
                  Modifier = RightHandWeapon!.Modifier,
                  WeaponTraits = RightHandWeapon!.WeaponTraits
              },
             LeftHand = character.Hands.LeftHand == null ? null :
             new WeaponDTO
             {
+                WeaponName = LeftHandWeapon!.WeaponName,
                 Modifier = LeftHandWeapon!.Modifier,
                 WeaponTraits = LeftHandWeapon!.WeaponTraits
             },
@@ -54,10 +56,10 @@ public class CharacterDTO
     }
     public static Character DTOToCharacter(CharacterDTO characterDTO)
     {
-        
+
         return new Character
         {
-            Guid = characterDTO.Guid == Guid.Empty? Guid.NewGuid():characterDTO.Guid,
+            Guid = characterDTO.Guid == Guid.Empty ? Guid.NewGuid() : characterDTO.Guid,
             Name = characterDTO.Name,
             Team = characterDTO.Team,
             //stats
@@ -74,12 +76,14 @@ public class CharacterDTO
                 RightHand = characterDTO.RightHand == null ? null :
                     new MeleeWeapon
                     {
+                        WeaponName = characterDTO.RightHand.WeaponName,
                         Modifier = characterDTO.RightHand.Modifier,
                         WeaponTraits = characterDTO.RightHand.WeaponTraits
                     },
                 LeftHand = characterDTO.LeftHand == null ? null :
                     new MeleeWeapon
                     {
+                        WeaponName = characterDTO.LeftHand.WeaponName,
                         Modifier = characterDTO.LeftHand.Modifier,
                         WeaponTraits = characterDTO.LeftHand.WeaponTraits
                     }
@@ -94,6 +98,7 @@ public class CharacterDTO
 
 public class WeaponDTO
 {
+    public string WeaponName { get; set; } = "";
     public int Modifier { get; set; }
     public required List<WeaponTrait> WeaponTraits { get; set; }
 }

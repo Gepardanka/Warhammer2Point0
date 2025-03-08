@@ -11,10 +11,7 @@ public class FightController: ControllerBase{
     [HttpGet]
     [Route("defaultChar")]
     public IEnumerable<CharacterDTO> GetDefaultChar(){
-        var chars = new List<Character>{
-
-        };
-        return chars.Select(CharacterDTO.CharacterToDTO).ToList();
+        return new DefaultCharacters().characters;
     }
 
     [HttpPost]

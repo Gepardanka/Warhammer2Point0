@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using WarhammerFightSimulator.Models;
 namespace WarhammerFightSimulator.Services;
 public class FightSimulator
@@ -16,7 +15,6 @@ public class FightSimulator
     }
     public RoundHistory Fight()
     {
-        
         List<Character> inBattle = GroupLogic.Initiative(_characters, _diceRolls).ToList();
         List<List<Character>> groups = GroupLogic.MakeGroups(inBattle);
         _roundHistory.TeamA = inBattle.Where(x => x.Team == CharacterTeam.TeamA).Select(CharacterDTO.CharacterToDTO).ToList();
