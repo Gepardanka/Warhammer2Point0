@@ -9,8 +9,5 @@ import { HttpService } from './http.service';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  constructor(private http: HttpService){
-    http.weatherFunction().subscribe(x => {console.log(x)})
-  }
-  title = 'Client';
+  
 }
