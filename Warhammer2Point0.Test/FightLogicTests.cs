@@ -24,9 +24,10 @@ public class FightLogicTests{
             IntsD10 = [2, 1, 1],
             IntsD100 = [9]
         };
-        Services.AttackSetUp attackSetUp = new(fakeDiceRolls);
-        Services.FightSimulator fightSimulator = new(fighters, fakeDiceRolls, attackSetUp);
-        Models.CharacterTeam winnerTeam = fightSimulator.Fight();
+        Models.RoundHistory roundHistory = new();
+        Services.AttackSetUp attackSetUp = new(fakeDiceRolls, roundHistory);
+        Services.FightSimulator fightSimulator = new(fighters, fakeDiceRolls, attackSetUp, roundHistory);
+        Models.CharacterTeam winnerTeam = fightSimulator.Fight().WinnerTeam;
         Assert.Equal(Models.CharacterTeam.TeamA, winnerTeam);
     }
     [Fact]
@@ -104,9 +105,10 @@ public class FightLogicTests{
             },
         };
         DiceRolls diceRolls = new();
-        Services.AttackSetUp attackSetUp = new(diceRolls);
-        Services.FightSimulator fightSimulator = new(fighters, diceRolls, attackSetUp);
-        var winner = fightSimulator.Fight();
+        Models.RoundHistory roundHistory = new();
+        Services.AttackSetUp attackSetUp = new(diceRolls, roundHistory);
+        Services.FightSimulator fightSimulator = new(fighters, diceRolls, attackSetUp, roundHistory);
+        var winner = fightSimulator.Fight().WinnerTeam;
         Assert.Equal(Models.CharacterTeam.TeamA, winner);
     }
 }

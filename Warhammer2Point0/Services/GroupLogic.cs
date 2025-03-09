@@ -18,6 +18,7 @@ public static class GroupLogic{
 
         List<List<Character>> groups = teamA.Zip(teamB, (a, b) => new List<Character>{a, b}).ToList();
         int j = 0;
+
         for(int i = groups.Count; i < teamA.Count; i++){
             groups[j++].Add(teamA[i]);
             j %= groups.Count;
