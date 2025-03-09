@@ -15,7 +15,7 @@ export class RoundService {
   }
 
   public startGame(model: any): void {
-    this.apiService.postGame(model).pipe(
+    this.apiService.postBattleStats(model).pipe(
       tap((result) => {
         this._currentRound.set(result);
       }),
