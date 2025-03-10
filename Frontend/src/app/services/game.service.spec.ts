@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { RoundService } from './round.service';
+import { GameService } from './game.service';
 
 describe('RoundService', () => {
-  let service: RoundService;
+  let service: GameService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(RoundService);
+    service = TestBed.inject(GameService);
   });
 
   it('should be created', () => {
