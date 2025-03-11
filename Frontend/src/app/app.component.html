@@ -1,2 +1,2 @@
-<!-- <app-menu></app-menu> -->
- <app-combat-scene class="w-max"></app-combat-scene>
+<app-menu *ngIf="!showGame()"></app-menu>
+<app-combat-scene *ngIf="showGame()" class="w-max"></app-combat-scene>
