@@ -1,4 +1,4 @@
-import { Injectable, inject, signal } from '@angular/core';
+import { Injectable, computed, inject, signal } from '@angular/core';
 import { ApiService } from './api.service';
 import { EMPTY, catchError, tap } from 'rxjs';
 import { RoundHistory } from '../models/round-history.model';
@@ -10,8 +10,10 @@ import { CharacterDTO } from '../models/character-dto.model';
 export class GameService {
   private readonly apiService = inject(ApiService);
 
-  private _currentRoundHistory = signal<any | null>(null);
+  private _currentRoundHistory = signal<RoundHistory | null>(null);
   private _defaultCharacters = signal<CharacterDTO[]>([]);
+
+  gameStarted = computed(() => this._currentRoundHistory() !== null);
 
   public get currentRoundHistory() {
     return this._currentRoundHistory.asReadonly();
@@ -51,3 +53,4 @@ export class GameService {
       .subscribe();
   }
 }
+
