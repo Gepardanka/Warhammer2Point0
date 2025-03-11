@@ -1,0 +1,44 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  padding: 0px 16px;
+  border-width: 2px;
+  border-color: black;
+}
+
+.character-selection {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.avatar-list {
+  display: flex;
+  gap: 10px;
+}
+
+.avatar {
+  cursor: pointer;
+  text-align: center;
+}
+
+.avatar img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  transition: border-color 0.2s;
+}
+
+.avatar:hover img {
+  border-color: blue;
+}
+
+.character-tiles {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 20px;
+}

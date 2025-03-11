@@ -1,0 +1,20 @@
+<div class="container">
+    <div class="character-selection">
+        <h3>Add Character</h3>
+        <div class="avatar-list">
+            <div *ngFor="let char of defaultCharacters()" class="avatar" (click)="addCharacter(char)">
+                <img src="https://dl2.myminifactory.com/object-assets/5f5fc3088ebeb/images/720X720-e816ae9c-ac5f-44e2-9998-81abc8c61ea2.jpg" [alt]="char.name" />
+                <p>{{ char.name }}</p>
+            </div>
+        </div>
+    </div>
+
+    <h3>Selected Characters</h3>
+    <div class="character-tiles">
+        <div *ngFor="let char of selectedCharacters(); let i = index">
+            <app-character-tile [character]="char" (remove)="removeCharacter(i)"></app-character-tile>
+        </div>
+    </div>
+
+    
+</div>
