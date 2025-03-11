@@ -5,49 +5,44 @@ namespace WarhammerFightSimulator.Tests;
 public class MeleeRoundTests{
     [Fact]
     public void FailHitRollRightHand(){
-        Round round = new Round{};
         Character attacking = new(){
             WW = 10,
             Hands = new Hands{
                 RightHand = new MeleeWeapon{
-                    WeaponName = "Sword"
+                    WeaponName = WeaponName.Sword
         }}};
-        Character defending = new(){CurrentZyw = 1};
+        Character defending = new(){CurrentZyw = 1, Guid = Guid.NewGuid()};
         FakeDiceRolls fakeDiceRolls = new(){IntsD100 = [90]};
         MeleeAttack meleeAttack = new(attacking, defending, fakeDiceRolls, 0);
-        meleeAttack.MakeAttack(attacking.Hands.RightHand, round);
-
         Round expectedRound = new Round{
-            AttackingWeaponName = "Sword",
+            AttackingWeaponName = WeaponName.Sword,
             HitSuccessFailReason = HitSuccessMissReason.Miss,
             DefendingCharID = defending.Guid,
             DefendingCharCurrentHP = 1
         };
 
-        Assert.Equivalent(expectedRound, round);
+        Assert.Equivalent(expectedRound, meleeAttack.MakeAttack(attacking.Hands.RightHand));
     }
 
     [Fact]
     public void SucceedAttackRightHand(){
-        Round round = new Round{};
         Character attacking = new(){
             WW = 10,
             Hands = new Hands{
                 RightHand = new MeleeWeapon{
+                    WeaponName = WeaponName.Sword,
                     Modifier = 0
         }}};
-        Character defending = new(){CurrentZyw = 1};
+        Character defending = new(){CurrentZyw = 1, Guid = Guid.NewGuid()};
         FakeDiceRolls fakeDiceRolls = new(){IntsD100 = [9], IntsD10 = [1]};
         MeleeAttack meleeAttack = new(attacking, defending, fakeDiceRolls, 0);
-        meleeAttack.MakeAttack(attacking.Hands.RightHand, round);
-
         Round expectedRound = new Round{
-            AttackingWeaponName = "",
+            AttackingWeaponName = WeaponName.Sword,
             HitSuccessFailReason = HitSuccessMissReason.Hit,
             DefendingCharID = defending.Guid,
             DefendingCharCurrentHP = 0
         };
 
-        Assert.Equivalent(expectedRound, round);    
+        Assert.Equivalent(expectedRound, meleeAttack.MakeAttack(attacking.Hands.RightHand));    
     }
 }

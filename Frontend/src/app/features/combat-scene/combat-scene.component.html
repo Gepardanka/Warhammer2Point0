@@ -1,0 +1,18 @@
+<div class="relative w-full h-screen flex px-10 py-10">
+    <!-- Left Side -->
+    <div class="relative w-1/2 h-full">
+      <img *ngFor="let i of [].constructor(imageCount); let index = index"
+           src="https://pngimg.com/uploads/orc/orc_PNG17.png"
+           class="h-60 object-contain absolute"
+           [ngStyle]="getImagePosition(index, false)">
+    </div>
+  
+    <!-- Right Side -->
+    <div class="relative w-1/2 h-full">
+      <img *ngFor="let i of [].constructor(imageCount); let index = index"
+           src="https://pngimg.com/uploads/orc/orc_PNG17.png"
+           class="h-60 object-contain absolute"
+           [ngStyle]="getImagePosition(index, true)">
+    </div>
+  </div>
+  
