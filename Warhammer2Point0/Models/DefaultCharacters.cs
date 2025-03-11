@@ -21,10 +21,16 @@ public class DefaultCharacters
                 RightHand =
                 new WeaponDTO
                 {
+                    WeaponName = WeaponName.Sword,
                     Modifier = 0,
                     WeaponTraits = []
                 },
-                LeftHand = null,
+                LeftHand = 
+                new WeaponDTO{
+                    WeaponName = WeaponName.Shield,
+                    Modifier = -2,
+                    WeaponTraits = [WeaponTrait.Parujacy]
+                },
                 Abilities = [],
                 DodgeValue = null
             },
@@ -43,12 +49,18 @@ public class DefaultCharacters
                 RightHand =
                 new WeaponDTO
                 {
-                    Modifier = 0,
-                    WeaponTraits = []
+                    WeaponName = WeaponName.Sword,
+                    Modifier = -1,
+                    WeaponTraits = [WeaponTrait.Szybki]
                 },
-                LeftHand = null,
-                Abilities = [],
-                DodgeValue = null
+                LeftHand =
+                new WeaponDTO{
+                    WeaponName = WeaponName.Shield,
+                    Modifier = -4,
+                    WeaponTraits = [WeaponTrait.Wywazony, WeaponTrait.Parujacy]
+                },
+                Abilities = [CharacterAbility.BlyskawicznyBlok],
+                DodgeValue = 10
             },
             new() {
                 Guid = Guid.NewGuid(),
@@ -65,11 +77,12 @@ public class DefaultCharacters
                 RightHand =
                 new WeaponDTO
                 {
+                    WeaponName = WeaponName.Axe,
                     Modifier = 0,
-                    WeaponTraits = []
+                    WeaponTraits = [WeaponTrait.Powolny, WeaponTrait.Druzgoczacy]
                 },
                 LeftHand = null,
-                Abilities = [],
+                Abilities = [CharacterAbility.SilnyCios],
                 DodgeValue = null
             },
             new() {
@@ -79,20 +92,21 @@ public class DefaultCharacters
                 MeleeSkill = 21,
                 Dexterity = 41,
                 NumberOfAttacks = 1,
-                Health = 2,
+                Health = 12,
                 Resistance = 2,
                 Strength = 2,
                 RangeSkill = 41,
-                Armour = new Armour{},
-                RightHand =
-                new WeaponDTO
-                {
-                    Modifier = 0,
-                    WeaponTraits = []
+                Armour = new Armour{
+                    Head = 1,
+                    RightArm = 1,
+                    LeftArm = 1,
+                    LeftLeg = 1,
+                    RightLeg = 1
                 },
+                RightHand = null,
                 LeftHand = null,
-                Abilities = [],
-                DodgeValue = null
+                Abilities = [CharacterAbility.Bijatyka],
+                DodgeValue = 20
             },
 
         ];

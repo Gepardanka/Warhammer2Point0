@@ -56,8 +56,7 @@ public class AttackSetUp : IAttackSetUp{
 
     private void DoAttack(Attack attackType, Weapon? attackingWeapon, int attacks){
         for(int i = 0; i < attacks; i++){
-            _roundHistory.Rounds.Add(new Round{});
-            attackType.MakeAttack(attackingWeapon, _roundHistory.Rounds.Last());
+            _roundHistory.Rounds.Add(attackType.MakeAttack(attackingWeapon));
         }
     }
 }

@@ -11,7 +11,7 @@ public class MeleeTests{
         Models.Character defending = new(){CurrentZyw = 1};
         FakeDiceRolls fakeDiceRolls = new(){IntsD100 = [90]};
         Services.MeleeAttack meleeAttack = new(attacking, defending, fakeDiceRolls, 0);
-        meleeAttack.MakeAttack(attacking.Hands.RightHand, new Models.Round{});
+        meleeAttack.MakeAttack(attacking.Hands.RightHand);
         Assert.Equal(1, defending.CurrentZyw); 
     }
     [Fact]
@@ -25,7 +25,7 @@ public class MeleeTests{
         Models.Character defending = new(){CurrentZyw = 1};
         FakeDiceRolls fakeDiceRolls = new(){IntsD100 = [9], IntsD10 = [1]};
         Services.MeleeAttack meleeAttack = new(attacking, defending, fakeDiceRolls, 0);
-        meleeAttack.MakeAttack(attacking.Hands.RightHand, new Models.Round{});
+        meleeAttack.MakeAttack(attacking.Hands.RightHand);
         Assert.Equal(0, defending.CurrentZyw);         
     }
     [Fact]
@@ -48,7 +48,7 @@ public class MeleeTests{
         };
         FakeDiceRolls fakeDiceRolls = new(){IntsD100 = [9, 15], IntsD10 = [1]};
         Services.MeleeAttack meleeAttack = new(attacking, defending, fakeDiceRolls, 0);
-        meleeAttack.MakeAttack(attacking.Hands.RightHand, new Models.Round{});
+        meleeAttack.MakeAttack(attacking.Hands.RightHand);
         Assert.Equal(1, defending.CurrentZyw);          
     }
     [Fact]
@@ -71,7 +71,7 @@ public class MeleeTests{
         };
         FakeDiceRolls fakeDiceRolls = new(){IntsD100 = [9, 15], IntsD10 = [1]};
         Services.MeleeAttack meleeAttack = new(attacking, defending, fakeDiceRolls, 0);
-        meleeAttack.MakeAttack(attacking.Hands.RightHand, new Models.Round{});
+        meleeAttack.MakeAttack(attacking.Hands.RightHand);
         Assert.Equal(1, defending.CurrentZyw);  
     }
     [Fact]
@@ -88,7 +88,7 @@ public class MeleeTests{
         };
         FakeDiceRolls fakeDiceRolls = new(){IntsD100 = [9], IntsD10 = [1]};
         Services.MeleeAttack meleeAttack = new(attacking, defending, fakeDiceRolls, 0);
-        meleeAttack.MakeAttack(attacking.Hands.RightHand, new Models.Round{});
+        meleeAttack.MakeAttack(attacking.Hands.RightHand);
         Assert.Equal(1, defending.CurrentZyw);  
     }
     [Fact]
@@ -113,7 +113,7 @@ public class MeleeTests{
         };
         FakeDiceRolls fakeDiceRolls = new(){IntsD100 = [9, 30], IntsD10 = [1]};
         Services.MeleeAttack meleeAttack = new(attacking, defending, fakeDiceRolls, 0);
-        meleeAttack.MakeAttack(attacking.Hands.RightHand, new Models.Round{});
+        meleeAttack.MakeAttack(attacking.Hands.RightHand);
         Assert.Equal(1, defending.CurrentZyw);          
     }
     [Fact]
@@ -136,7 +136,7 @@ public class MeleeTests{
         };
         FakeDiceRolls fakeDiceRolls = new(){IntsD100 = [9, 30], IntsD10 = [1]};
         Services.MeleeAttack meleeAttack = new(attacking, defending, fakeDiceRolls, 0);
-        meleeAttack.MakeAttack(attacking.Hands.RightHand, new Models.Round{});
+        meleeAttack.MakeAttack(attacking.Hands.RightHand);
         Assert.Equal(1, defending.CurrentZyw);             
     }
     [Fact]
@@ -159,7 +159,7 @@ public class MeleeTests{
         };
         FakeDiceRolls fakeDiceRolls = new(){IntsD100 = [9, 20], IntsD10 = [1]};
         Services.MeleeAttack meleeAttack = new(attacking, defending, fakeDiceRolls, 0);
-        meleeAttack.MakeAttack(attacking.Hands.RightHand, new Models.Round{});
+        meleeAttack.MakeAttack(attacking.Hands.RightHand);
         Assert.Equal(0, defending.CurrentZyw);            
     }
     [Fact]
@@ -178,7 +178,7 @@ public class MeleeTests{
         };
         FakeDiceRolls fakeDiceRolls = new(){IntsD100 = [9, 30], IntsD10 = [1]};
         Services.MeleeAttack meleeAttack = new(attacking, defending, fakeDiceRolls, 0);
-        meleeAttack.MakeAttack(attacking.Hands.RightHand, new Models.Round{});
+        meleeAttack.MakeAttack(attacking.Hands.RightHand);
         Assert.Equal(1, defending.CurrentZyw);            
     }
     [Fact]
@@ -197,7 +197,7 @@ public class MeleeTests{
         };
         FakeDiceRolls fakeDiceRolls = new(){IntsD100 = [9, 20], IntsD10 = [1]};
         Services.MeleeAttack meleeAttack = new(attacking, defending, fakeDiceRolls, 0);
-        meleeAttack.MakeAttack(attacking.Hands.RightHand, new Models.Round{});
+        meleeAttack.MakeAttack(attacking.Hands.RightHand);
         Assert.Equal(0, defending.CurrentZyw);           
     }
     [Fact]
@@ -215,7 +215,7 @@ public class MeleeTests{
         };
         FakeDiceRolls fakeDiceRolls = new(){IntsD100 = [9], IntsD10 = [1, 2]};
         Services.MeleeAttack meleeAttack = new(attacking, defending, fakeDiceRolls, 0);
-        meleeAttack.MakeAttack(attacking.Hands.RightHand, new Models.Round{});
+        meleeAttack.MakeAttack(attacking.Hands.RightHand);
         Assert.Equal(0, defending.CurrentZyw);        
     }
     [Fact]
@@ -233,7 +233,7 @@ public class MeleeTests{
         };
         FakeDiceRolls fakeDiceRolls = new(){IntsD100 = [9], IntsD10 = [1]};
         Services.MeleeAttack meleeAttack = new(attacking, defending, fakeDiceRolls, 0);
-        meleeAttack.MakeAttack(attacking.Hands.RightHand, new Models.Round{});
+        meleeAttack.MakeAttack(attacking.Hands.RightHand);
         Assert.Equal(0, defending.CurrentZyw);    
     }
     [Fact]
@@ -251,7 +251,7 @@ public class MeleeTests{
         };
         FakeDiceRolls fakeDiceRolls = new(){IntsD100 = [9], IntsD10 = [1]};
         Services.MeleeAttack meleeAttack = new(attacking, defending, fakeDiceRolls, 0);
-        meleeAttack.MakeAttack(attacking.Hands.RightHand, new Models.Round{});
+        meleeAttack.MakeAttack(attacking.Hands.RightHand);
         Assert.Equal(0, defending.CurrentZyw);        
     }
     [Fact]
@@ -268,7 +268,7 @@ public class MeleeTests{
         };
         FakeDiceRolls fakeDiceRolls = new(){IntsD100 = [9], IntsD10 = [1]};
         Services.MeleeAttack meleeAttack = new(attacking, defending, fakeDiceRolls, 0);
-        meleeAttack.MakeAttack(attacking.Hands.RightHand, new Models.Round{});
+        meleeAttack.MakeAttack(attacking.Hands.RightHand);
         Assert.Equal(1, defending.CurrentZyw);         
     }
 }

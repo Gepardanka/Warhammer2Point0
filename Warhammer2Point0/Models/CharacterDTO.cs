@@ -2,6 +2,8 @@ using WarhammerFightSimulator.Models;
 
 public class CharacterDTO
 {
+    public string BigURL { get; set; } = "";
+    public string SmallURL { get; set; } = "";
     public required string Name { get; set; }
     public Guid Guid { get; set; } = Guid.NewGuid();
     public CharacterTeam Team { get; set; }
@@ -24,6 +26,8 @@ public class CharacterDTO
         MeleeWeapon? LeftHandWeapon = (MeleeWeapon?)character.Hands.LeftHand;
         return new CharacterDTO
         {
+            BigURL = character.BigURL,
+            SmallURL = character.SmallURL,
             Guid = character.Guid,
             Name = character.Name,
             Team = character.Team,
@@ -98,7 +102,7 @@ public class CharacterDTO
 
 public class WeaponDTO
 {
-    public string WeaponName { get; set; } = "";
+    public WeaponName WeaponName { get; set; }
     public int Modifier { get; set; }
     public required List<WeaponTrait> WeaponTraits { get; set; }
 }
