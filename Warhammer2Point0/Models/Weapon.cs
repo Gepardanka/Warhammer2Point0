@@ -35,5 +35,7 @@ public enum WeaponTrait{
 public enum WeaponName{
     Unarmed = 0,
     Sword = 1,
-    Axe = 2
+    Axe = 2,
+    Shield = 3,
+
 }
