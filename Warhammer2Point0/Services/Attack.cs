@@ -100,7 +100,7 @@ public class UnarmedAttack(Character attacking, Character defending, IDiceRolls 
     public override Round MakeAttack(IEquipmentItem? hand)
     {
         Round round = new Round();
-        round.AttackingWeaponName = "Unarmed";
+        round.AttackingWeaponName = WeaponName.Unarmed;
         round.DefendingCharID = _defending.Guid;
         round.DefendingCharCurrentHP = _defending.CurrentZyw;
 

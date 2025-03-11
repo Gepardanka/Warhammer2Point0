@@ -12,7 +12,7 @@ public class RoundTests{
 
 
         Models.Round expectedRound = new Models.Round{
-            AttackingWeaponName = "Unarmed",
+            AttackingWeaponName = Models.WeaponName.Unarmed,
             HitSuccessFailReason = Models.HitSuccessMissReason.Miss,
             DefendingCharID = defending.Guid,
             DefendingCharCurrentHP = 1
@@ -30,7 +30,7 @@ public class RoundTests{
 
 
         Models.Round expectedRound = new Models.Round{
-            AttackingWeaponName = "Unarmed",
+            AttackingWeaponName = Models.WeaponName.Unarmed,
             HitSuccessFailReason = Models.HitSuccessMissReason.Hit,
             DefendingCharID = defending.Guid,
             DefendingCharCurrentHP = 0
@@ -56,7 +56,7 @@ public class RoundTests{
         UnarmedAttack unarmedAttack = new(attacking, defending, fakeDiceRolls, 0);
 
         Models.Round expectedRound = new Models.Round{
-            AttackingWeaponName = "Unarmed",
+            AttackingWeaponName = Models.WeaponName.Unarmed,
             HitSuccessFailReason = Models.HitSuccessMissReason.Parry,
             DefendingCharID = defending.Guid,
             DefendingCharCurrentHP = 1
@@ -82,7 +82,7 @@ public class RoundTests{
         UnarmedAttack unarmedAttack = new(attacking, defending, fakeDiceRolls, 0);
 
         Models.Round expectedRound = new Models.Round{
-            AttackingWeaponName = "Unarmed",
+            AttackingWeaponName = Models.WeaponName.Unarmed,
             HitSuccessFailReason = Models.HitSuccessMissReason.Hit,
             DefendingCharID = defending.Guid,
             DefendingCharCurrentHP = 0
@@ -105,7 +105,7 @@ public class RoundTests{
         UnarmedAttack unarmedAttack = new(attacking, defending, fakeDiceRolls, 0);
 
         Models.Round expectedRound = new Models.Round{
-            AttackingWeaponName = "Unarmed",
+            AttackingWeaponName = Models.WeaponName.Unarmed,
             HitSuccessFailReason = Models.HitSuccessMissReason.Dodge,
             DefendingCharID = defending.Guid,
             DefendingCharCurrentHP = 1
@@ -128,7 +128,7 @@ public class RoundTests{
         UnarmedAttack unarmedAttack = new(attacking, defending, fakeDiceRolls, 0);
 
         Models.Round expectedRound = new Models.Round{
-            AttackingWeaponName = "Unarmed",
+            AttackingWeaponName = Models.WeaponName.Unarmed,
             HitSuccessFailReason = Models.HitSuccessMissReason.Hit,
             DefendingCharID = defending.Guid,
             DefendingCharCurrentHP = 0

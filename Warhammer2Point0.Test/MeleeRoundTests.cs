@@ -9,13 +9,13 @@ public class MeleeRoundTests{
             WW = 10,
             Hands = new Hands{
                 RightHand = new MeleeWeapon{
-                    WeaponName = "Sword"
+                    WeaponName = WeaponName.Sword
         }}};
         Character defending = new(){CurrentZyw = 1, Guid = Guid.NewGuid()};
         FakeDiceRolls fakeDiceRolls = new(){IntsD100 = [90]};
         MeleeAttack meleeAttack = new(attacking, defending, fakeDiceRolls, 0);
         Round expectedRound = new Round{
-            AttackingWeaponName = "Sword",
+            AttackingWeaponName = WeaponName.Sword,
             HitSuccessFailReason = HitSuccessMissReason.Miss,
             DefendingCharID = defending.Guid,
             DefendingCharCurrentHP = 1
@@ -30,13 +30,14 @@ public class MeleeRoundTests{
             WW = 10,
             Hands = new Hands{
                 RightHand = new MeleeWeapon{
+                    WeaponName = WeaponName.Sword,
                     Modifier = 0
         }}};
         Character defending = new(){CurrentZyw = 1, Guid = Guid.NewGuid()};
         FakeDiceRolls fakeDiceRolls = new(){IntsD100 = [9], IntsD10 = [1]};
         MeleeAttack meleeAttack = new(attacking, defending, fakeDiceRolls, 0);
         Round expectedRound = new Round{
-            AttackingWeaponName = "",
+            AttackingWeaponName = WeaponName.Sword,
             HitSuccessFailReason = HitSuccessMissReason.Hit,
             DefendingCharID = defending.Guid,
             DefendingCharCurrentHP = 0

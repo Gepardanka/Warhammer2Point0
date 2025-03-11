@@ -98,7 +98,7 @@ public class CharacterDTO
 
 public class WeaponDTO
 {
-    public string WeaponName { get; set; } = "";
+    public WeaponName WeaponName { get; set; }
     public int Modifier { get; set; }
     public required List<WeaponTrait> WeaponTraits { get; set; }
 }
