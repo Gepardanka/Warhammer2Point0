@@ -1,12 +1,24 @@
-.container {
+.main-container {
+    height: 100vh;
+    background: url('https://getwallpapers.com/wallpaper/full/8/1/0/1089275-warhammer-wallpaper-2560x1600-phone.jpg');
+    background-color: rgba(0, 0, 0, 0.7);
+    background-blend-mode: darken;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.grid-container {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 16px;
+    gap: 32px;
     padding: 16px;
+    height: 100%;
+    box-sizing: border-box;
 }
 
 @media (max-width: 768px) {
-    .container {
+    .grid-container {
         grid-template-columns: 1fr;
         padding: 16px;
         gap: 16px;
