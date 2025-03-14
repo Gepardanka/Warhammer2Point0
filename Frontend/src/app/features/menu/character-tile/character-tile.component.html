@@ -1,10 +1,12 @@
 <div class="character-tile">
     <div class="container-left">
-        <img src="https://dl2.myminifactory.com/object-assets/5f5fc3088ebeb/images/720X720-e816ae9c-ac5f-44e2-9998-81abc8c61ea2.jpg"
+        <img [src]="character().smallURL"
             [alt]="character().name" />
-        <h4>{{ character().name }}</h4>
-        <p>Hp: {{ character().health }}</p>
-        <p>NoA: {{ character().numberOfAttacks }}</p>
+        <p>{{ character().name }}</p>
+        <p><i class="ra ra-sword"></i> {{ character().strength }}</p>
+        <p><i class="ra ra-spinning-sword"></i> {{ character().numberOfAttacks }}</p>
+        <p><i class="ra ra-health"></i> {{ character().health }}</p>
+        <p><i class="ra ra-shield"></i> {{ character().resistance }}</p>
     </div>
-    <button class="button" (click)="removeCharacter()">🗑️</button>
+    <button class="delete-button" (click)="removeCharacter()">Delete</button>
 </div>
