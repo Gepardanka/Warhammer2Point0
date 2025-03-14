@@ -1,4 +1,4 @@
-import { Injectable, signal, WritableSignal } from '@angular/core';
+import { computed, Injectable, signal, WritableSignal } from '@angular/core';
 import { CharacterDTO } from '../models/character-dto.model';
 import { CharacterTeam } from '../models/character-team.model';
 
@@ -15,6 +15,11 @@ export class MenuService {
         return this.selectedCharactersLeft.asReadonly();
       case CharacterTeam.TeamB:
         return this.selectedCharactersRight.asReadonly();
+      case CharacterTeam.Both:
+        return computed(() => [
+          ...this.selectedCharactersLeft(),
+          ...this.selectedCharactersRight(),
+        ]);
       default:
         console.error('Wrong team selected');
         return this.selectedCharactersLeft.asReadonly();
