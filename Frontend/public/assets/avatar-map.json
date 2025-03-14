@@ -1,27 +1,27 @@
 [
     {
         "name": "Default",
-        "avatar_url": "/assets/avatars/elf.png",
-        "character_url": "/assets/characters/elf.png"
+        "avatar_url": "/assets/images/avatars/elf.png",
+        "character_url": "/assets/images/characters/elf.png"
     },
     {
         "name": "Elf",
-        "avatar_url": "/assets/avatars/elf.png",
-        "character_url": "/assets/characters/elf.png"
+        "avatar_url": "/assets/images/avatars/elf.png",
+        "character_url": "/assets/images/characters/elf.png"
     },
     {
         "name": "Krasnolud",
-        "avatar_url": "/assets/avatars/dwarf.png",
-        "character_url": "/assets/characters/dwarf.png"
+        "avatar_url": "/assets/images/avatars/dwarf.png",
+        "character_url": "/assets/images/characters/dwarf.png"
     },
     {
         "name": "Człowiek",
-        "avatar_url": "/assets/avatars/warrior.png",
-        "character_url": "/assets/characters/warrior.png"
+        "avatar_url": "/assets/images/avatars/warrior.png",
+        "character_url": "/assets/images/characters/warrior.png"
     },
     {
         "name": "Niziołek",
-        "avatar_url": "/assets/avatars/niziolek.png",
-        "character_url": "/assets/characters/niziolek.png"
+        "avatar_url": "/assets/images/avatars/niziolek.png",
+        "character_url": "/assets/images/characters/niziolek.png"
     }
 ]
