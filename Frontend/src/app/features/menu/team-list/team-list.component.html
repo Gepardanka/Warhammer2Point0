@@ -3,7 +3,7 @@
         <h1>Add Character</h1>
         <div class="avatar-list">
             <div *ngFor="let char of defaultCharacters()" class="avatar" (click)="addCharacter(char)">
-                <img src="https://dl2.myminifactory.com/object-assets/5f5fc3088ebeb/images/720X720-e816ae9c-ac5f-44e2-9998-81abc8c61ea2.jpg" [alt]="char.name" />
+                <img [src]="char.smallURL" [alt]="char.name" />
                 <p>{{ char.name }}</p>
             </div>
         </div>
@@ -15,6 +15,4 @@
             <app-character-tile [character]="char" (remove)="removeCharacter(i)"></app-character-tile>
         </div>
     </div>
-
-    
 </div>
