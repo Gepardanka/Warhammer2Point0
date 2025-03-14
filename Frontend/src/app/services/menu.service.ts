@@ -12,10 +12,8 @@ export class MenuService {
   getSelectedCharacters(team: CharacterTeam) {
     switch (team) {
       case CharacterTeam.TeamA:
-        console.log('Team A');
         return this.selectedCharactersLeft.asReadonly();
       case CharacterTeam.TeamB:
-        console.log('Team B');
         return this.selectedCharactersRight.asReadonly();
       default:
         console.error('Wrong team selected');
@@ -26,11 +24,9 @@ export class MenuService {
   addCharacter(char: CharacterDTO, team: CharacterTeam) {
     switch (team) {
       case CharacterTeam.TeamA:
-        console.log('Team A');
         this.addCharacterToCollection(this.selectedCharactersLeft, char);
         break;
       case CharacterTeam.TeamB:
-        console.log('Team B');
         this.addCharacterToCollection(this.selectedCharactersRight, char);
         break;
     }
