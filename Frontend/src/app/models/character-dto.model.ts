@@ -4,6 +4,8 @@ import { CharacterTeam } from './character-team.model';
 import { WeaponDTO } from './weapon-dto.model';
 
 export interface CharacterDTO {
+  bigURL: string;
+  smallURL: string;
   name: string;
   guid: string;
   team: CharacterTeam;
