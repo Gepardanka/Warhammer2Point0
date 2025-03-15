@@ -1,6 +1,7 @@
-import { Component, HostListener, inject, signal } from '@angular/core';
+import { Component, HostListener, inject, Input, signal } from '@angular/core';
 import { GameService } from '../../services/game.service';
 import { NgFor, NgStyle } from '@angular/common';
+import { RoundHistory } from '../../models/round-history.model';
 
 @Component({
   selector: 'app-combat-scene',
@@ -17,23 +18,42 @@ export class CombatSceneComponent {
   maxVerticalShift = signal(0);
   maxHorizontalShift = signal(0);
 
-  getImagePosition(
-    index: number,
-    isRightSide: boolean
-  ): { left?: string; right?: string; bottom: string; height: string } {
-    const k = 0.25;
-    const reverseIndex = this.imageCount - index - 1;
-    let scale = 1 - 1 / (1 + k * reverseIndex);
-    const bottom = `${(this.maxVerticalShift() * scale) / 1.6}px`;
-    const xPos = `${this.maxHorizontalShift() * scale * 1.2}px`;
-    const height = `${this.baseHeight * (1 - scale)}px`;
+  @Input() fightHistory!: RoundHistory
 
-    return isRightSide
-      ? { right: xPos, bottom, height }
-      : { left: xPos, bottom, height };
-  }
+  // getImagePosition(
+  //   index: number,
+  //   isRightSide: boolean
+  // ): { left?: string; right?: string; bottom: string; height: string } {
+  //   const k = 0.25;
+  //   const reverseIndex = this.imageCount - index - 1;
+  //   let scale = 1 - 1 / (1 + k * reverseIndex);
+  //   const bottom = `${(this.maxVerticalShift() * scale) / 1.6}px`;
+  //   const xPos = `${this.maxHorizontalShift() * scale * 1.2}px`;
+  //   const height = `${this.baseHeight * (1 - scale)}px`;
+
+  //   return isRightSide
+  //     ? { right: xPos, bottom, height }
+  //     : { left: xPos, bottom, height };
+  // }
+
 
   ngOnInit(): void {
+
+    //na potrzeby testowania do usunięcia jak wsyzstko bedzie działać
+    console.log(this.fightHistory)
+    for(const character of this.fightHistory.teamA){
+      if(character.name == "Elf"){character.bigURL = "/assets/images/characters/elf.png"}
+      if(character.name == "Człowiek"){character.bigURL = "/assets/images/characters/warrior.png"} 
+      if(character.name == "Krasnolud"){character.bigURL = "/assets/images/characters/dwarf.png"}
+      if(character.name == "Niziołek"){character.bigURL = "/assets/images/characters/niziolek.png"}     
+    }
+    for(const character of this.fightHistory.teamB){
+      if(character.name == "Elf"){character.bigURL = "/assets/images/characters/elf.png"}
+      if(character.name == "Człowiek"){character.bigURL = "/assets/images/characters/warrior.png"} 
+      if(character.name == "Krasnolud"){character.bigURL = "/assets/images/characters/dwarf.png"}
+      if(character.name == "Niziołek"){character.bigURL = "/assets/images/characters/niziolek.png"}     
+    }
+
     this.updateResponsiveValues();
   }
 
