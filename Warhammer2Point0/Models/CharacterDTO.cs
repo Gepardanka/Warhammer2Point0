@@ -63,6 +63,8 @@ public class CharacterDTO
 
         return new Character
         {
+            BigURL = characterDTO.BigURL,
+            SmallURL = characterDTO.SmallURL,
             Guid = characterDTO.Guid == Guid.Empty ? Guid.NewGuid() : characterDTO.Guid,
             Name = characterDTO.Name,
             Team = characterDTO.Team,

@@ -7,6 +7,8 @@ public class DefaultCharacters
     {
         characters = [
             new() {
+                BigURL = "https://raw.githubusercontent.com/Gepardanka/Warhammer2Point0/refs/heads/master/Assets/Images/warrior.png?",
+                SmallURL = "https://raw.githubusercontent.com/Gepardanka/Warhammer2Point0/refs/heads/master/Assets/Icons/warrior_icon.png?",
                 Guid = Guid.NewGuid(),
                 Name = "Człowiek",
                 Team = CharacterTeam.TeamA,
@@ -35,6 +37,8 @@ public class DefaultCharacters
                 DodgeValue = null
             },
             new() {
+                BigURL = "https://raw.githubusercontent.com/Gepardanka/Warhammer2Point0/refs/heads/master/Assets/Images/elf.png?",
+                SmallURL = "https://raw.githubusercontent.com/Gepardanka/Warhammer2Point0/refs/heads/master/Assets/Icons/elf_icon.png?",
                 Guid = Guid.NewGuid(),
                 Name = "Elf",
                 Team = CharacterTeam.TeamA,
@@ -63,9 +67,11 @@ public class DefaultCharacters
                 DodgeValue = 10
             },
             new() {
+                BigURL = "https://raw.githubusercontent.com/Gepardanka/Warhammer2Point0/refs/heads/master/Assets/Images/dwarf.png?",
+                SmallURL = "https://raw.githubusercontent.com/Gepardanka/Warhammer2Point0/refs/heads/master/Assets/Icons/dwarf_icon.png?",
                 Guid = Guid.NewGuid(),
                 Name = "Krasnolud",
-                Team =  CharacterTeam.TeamB,
+                Team =  CharacterTeam.TeamA,
                 MeleeSkill = 41,
                 Dexterity = 21,
                 NumberOfAttacks = 1,
@@ -86,6 +92,8 @@ public class DefaultCharacters
                 DodgeValue = null
             },
             new() {
+                BigURL = "https://raw.githubusercontent.com/Gepardanka/Warhammer2Point0/refs/heads/master/Assets/Images/niziolek.png?",
+                SmallURL = "https://raw.githubusercontent.com/Gepardanka/Warhammer2Point0/refs/heads/master/Assets/Icons/niziolek_icon.png?",
                 Guid = Guid.NewGuid(),
                 Name = "Niziołek",
                 Team = CharacterTeam.TeamB,
@@ -108,7 +116,34 @@ public class DefaultCharacters
                 Abilities = [CharacterAbility.Bijatyka],
                 DodgeValue = 20
             },
-
+            new() {
+                BigURL = "https://raw.githubusercontent.com/Gepardanka/Warhammer2Point0/refs/heads/master/Assets/Images/orc.png?",
+                SmallURL = "https://raw.githubusercontent.com/Gepardanka/Warhammer2Point0/refs/heads/master/Assets/Icons/orc_icon.png?",
+                Guid = Guid.NewGuid(),
+                Name = "Ork",
+                Team = CharacterTeam.TeamB,
+                MeleeSkill = 35,
+                Dexterity = 25,
+                NumberOfAttacks = 1,
+                Health = 12,
+                Resistance = 4,
+                Strength = 3,
+                RangeSkill = 35,
+                Armour = new Armour{
+                    Head = 1,
+                    RightArm = 1,
+                    LeftArm = 1,
+                    Body = 3
+                },
+                RightHand = new WeaponDTO{
+                    WeaponName = WeaponName.Axe,
+                    Modifier = 0,
+                    WeaponTraits = []
+                },
+                LeftHand = null,
+                Abilities = [CharacterAbility.Bijatyka, CharacterAbility.SilnyCios],
+                DodgeValue = null
+            },
         ];
     }
 }
