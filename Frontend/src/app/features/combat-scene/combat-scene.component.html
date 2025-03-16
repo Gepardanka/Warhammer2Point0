@@ -1,18 +1,62 @@
-<div class="relative w-full h-screen flex px-10 py-10">
+<div class="relative w-full flex px-10 py-10">
     <!-- Left Side -->
     <div class="relative w-1/2 h-full">
-      <img *ngFor="let i of [].constructor(imageCount); let index = index"
-           src="https://pngimg.com/uploads/orc/orc_PNG17.png"
-           class="h-60 object-contain absolute"
-           [ngStyle]="getImagePosition(index, false)">
+      @for (item of fightHistory.teamA; track $index) {
+        <div class="flex">
+          <div>
+            <div class="flex justify-center items-center">
+              <i class="ra ra-health"></i>
+              {{item.health}}
+              @switch (item.rightHand?.weaponName) {
+                @case (null) {
+                  <i class="ra ra-hand"></i>
+                }
+                @case (1) {
+                  <i class="ra ra-sword"></i>
+                }
+                @case (2) {
+                  <i class="ra ra-axe"></i>
+                }
+                @case (3) {
+                  <i class="ra ra-bolt-shield"></i>
+                }
+              }
+            </div>
+            <img [src]="item.bigURL">
+          </div>
+          
+        </div>
+      }
     </div>
   
     <!-- Right Side -->
     <div class="relative w-1/2 h-full">
-      <img *ngFor="let i of [].constructor(imageCount); let index = index"
-           src="https://pngimg.com/uploads/orc/orc_PNG17.png"
-           class="h-60 object-contain absolute"
-           [ngStyle]="getImagePosition(index, true)">
+      @for (item of fightHistory.teamB; track $index) {
+        <div class="flex justify-end">
+          <div>
+            <div class="flex justify-center items-center">
+              <i class="ra ra-health"></i>
+              {{item.health}}
+              @switch (item.rightHand?.weaponName) {
+                @case (null) {
+                  <i class="ra ra-hand"></i>
+                }
+                @case (1) {
+                  <i class="ra ra-sword"></i>
+                }
+                @case (2) {
+                  <i class="ra ra-axe"></i>
+                }
+                @case (3) {
+                  <i class="ra ra-bolt-shield"></i>
+                }
+              }
+            </div>
+            <img [src]="item.bigURL">
+          </div>
+          
+        </div>
+      }
     </div>
   </div>
   
