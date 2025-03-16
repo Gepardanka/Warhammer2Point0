@@ -92,7 +92,11 @@ public class GroupLogicTests
             new List<Models.Character>{
                 new Models.Character{Team = Models.CharacterTeam.TeamA},
                 new Models.Character{Team = Models.CharacterTeam.TeamB}
+            },
+            new List<Models.Character>{
+                toReassign
             }
+
         };
         GroupLogic.ReassignToGroups(toReassign, groups);
         var groupCount = groups.Count(x => {
@@ -110,7 +114,8 @@ public class GroupLogicTests
                 new Models.Character{Team = Models.CharacterTeam.TeamA},
                 new Models.Character{Team = Models.CharacterTeam.TeamB},
                 new Models.Character{Team = Models.CharacterTeam.TeamB}
-            }
+            },
+            new List<Models.Character> {toReassign}
         };
         GroupLogic.ReassignToGroups(toReassign, groups);
         var groupCount = groups.Count(x => {
@@ -132,7 +137,8 @@ public class GroupLogicTests
             new List<Models.Character>{
                 new Models.Character{Team = Models.CharacterTeam.TeamA},
                 new Models.Character{Team = Models.CharacterTeam.TeamB}
-            }
+            },
+            new List<Models.Character>{toReassign}
         };
         GroupLogic.ReassignToGroups(toReassign, groups);
         Assert.Equal(2, groups.Count);
@@ -152,10 +158,109 @@ public class GroupLogicTests
                 new Models.Character{Team = Models.CharacterTeam.TeamB},
                 new Models.Character{Team = Models.CharacterTeam.TeamB},
                 new Models.Character{Team = Models.CharacterTeam.TeamB}
-            }
+            },
+            new List<Models.Character> {toReassign}
         };
         GroupLogic.ReassignToGroups(toReassign, groups);
         Assert.Equal(3, groups.Count);
         Assert.Equal(3, groups[1].Count);  
+    }
+
+    [Fact]
+    public void MultiChooseSingleEnemy(){
+        Models.Character toReassign = new Models.Character{Team = Models.CharacterTeam.TeamA};
+        List<List<Models.Character>> groups = new List<List<Models.Character>>{
+            new List<Models.Character>{
+                new Models.Character{Team = Models.CharacterTeam.TeamB}
+            },
+            new List<Models.Character>{
+                new Models.Character{Team = Models.CharacterTeam.TeamA},
+                new Models.Character{Team = Models.CharacterTeam.TeamB},
+                new Models.Character{Team = Models.CharacterTeam.TeamB}
+            },
+            new List<Models.Character>{
+                new Models.Character{Team = Models.CharacterTeam.TeamA},
+                new Models.Character{Team = Models.CharacterTeam.TeamB},
+            },
+            new List<Models.Character>{
+                new Models.Character{Team = Models.CharacterTeam.TeamA},
+                new Models.Character{Team = Models.CharacterTeam.TeamA},
+                new Models.Character{Team = Models.CharacterTeam.TeamB},
+            },
+            new List<Models.Character>{
+                new Models.Character{Team = Models.CharacterTeam.TeamA},
+            },
+            new List<Models.Character> {toReassign}
+        };
+        GroupLogic.ReassignToGroups(toReassign, groups);
+        var check = groups.Any(gr => gr.Count() == 1 && gr.First().Team == Models.CharacterTeam.TeamB);
+        Assert.False(check);
+    }
+
+    [Fact]
+    public void MultiChooseSteal(){
+        Models.Character toReassign = new Models.Character{Team = Models.CharacterTeam.TeamA};
+        List<List<Models.Character>> groups = new List<List<Models.Character>>{
+            new List<Models.Character>{
+                new Models.Character{Team = Models.CharacterTeam.TeamA},
+                new Models.Character{Team = Models.CharacterTeam.TeamB},
+                new Models.Character{Team = Models.CharacterTeam.TeamB}
+            },
+            new List<Models.Character>{
+                new Models.Character{Team = Models.CharacterTeam.TeamA},
+                new Models.Character{Team = Models.CharacterTeam.TeamB},
+            },
+            new List<Models.Character>{
+                new Models.Character{Team = Models.CharacterTeam.TeamA},
+                new Models.Character{Team = Models.CharacterTeam.TeamA},
+                new Models.Character{Team = Models.CharacterTeam.TeamB},
+            },
+            new List<Models.Character>{
+                new Models.Character{Team = Models.CharacterTeam.TeamA},
+            },
+            new List<Models.Character> {toReassign}
+        };
+        GroupLogic.ReassignToGroups(toReassign, groups);
+        Assert.Equal(3, groups.Count(gr => gr.Count() == 2));
+    }
+
+    [Fact]
+    public void MultiChooseSmallGroup(){
+        Models.Character toReassign = new Models.Character{Team = Models.CharacterTeam.TeamA};
+        List<List<Models.Character>> groups = new List<List<Models.Character>>{
+            new List<Models.Character>{
+                new Models.Character{Team = Models.CharacterTeam.TeamA},
+                new Models.Character{Team = Models.CharacterTeam.TeamB},
+            },
+            new List<Models.Character>{
+                new Models.Character{Team = Models.CharacterTeam.TeamA},
+                new Models.Character{Team = Models.CharacterTeam.TeamA},
+                new Models.Character{Team = Models.CharacterTeam.TeamB},
+            },
+            new List<Models.Character>{
+                new Models.Character{Team = Models.CharacterTeam.TeamA},
+            },
+            new List<Models.Character> {toReassign}
+        };
+        GroupLogic.ReassignToGroups(toReassign, groups);
+        Assert.Equal(2, groups.Count(gr => gr.Count() == 3));
+    }
+
+    [Fact]
+    public void MultiChooseEnemy(){
+        Models.Character toReassign = new Models.Character{Team = Models.CharacterTeam.TeamA};
+        List<List<Models.Character>> groups = new List<List<Models.Character>>{
+            new List<Models.Character>{
+                new Models.Character{Team = Models.CharacterTeam.TeamA},
+                new Models.Character{Team = Models.CharacterTeam.TeamA},
+                new Models.Character{Team = Models.CharacterTeam.TeamB},
+            },
+            new List<Models.Character>{
+                new Models.Character{Team = Models.CharacterTeam.TeamA},
+            },
+            new List<Models.Character> {toReassign}
+        };
+        GroupLogic.ReassignToGroups(toReassign, groups);
+        Assert.Equal(0, groups.Count(gr => gr.Count() == 2));
     }
 }

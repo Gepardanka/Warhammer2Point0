@@ -29,21 +29,41 @@ public static class GroupLogic{
         }
         return groups;
     }
-    public static void ReassignToGroups(Character toReassign, List<List<Character>> groups)
-    {
+
+
+    public static void ReassignToGroups(Character toReassign, List<List<Character>> groups){
         Debug.Assert(groups.Count != 0);
-        var canReassign = groups.Where(group => {
-            return group.Count(ch => ch.Team == toReassign.Team) > 1 || group.Count == 2;
-        }).ToList();
-        if(canReassign.Count > 0){
-            var toAdd = canReassign.MinBy(x => x.Count);
-            toAdd!.Add(toReassign);
+        var originGroup = groups.First(x => x.Contains(toReassign));
+
+        var canReassign = groups.Where(gr => gr.Any(ch => ch.Team != toReassign.Team)).ToList();
+        if(canReassign.Count == 0){return;}
+
+        var lonelyGroup = canReassign.FirstOrDefault(gr => gr.Count() == 1);
+        //check if can add to lonely enemy
+        if(lonelyGroup != null){
+            lonelyGroup.Add(toReassign);
         }
         else{
-            var toSteal = groups.MaxBy(x => x.Count)!;
-            Character stollen = toSteal.First(x => x.Team != toReassign.Team);
-            toSteal.Remove(stollen);
-            groups.Add([toReassign, stollen]);
+            //check if can steal from a group with the greatest enemy advantage
+            var enemyAdvantage = canReassign.MaxBy(gr => gr.Count(ch => ch.Team != toReassign.Team));
+            if(enemyAdvantage!.Count(ch => ch.Team != toReassign.Team) > 1){
+                var toSteal = enemyAdvantage!.First(ch => ch.Team != toReassign.Team);
+                groups.Add([toReassign, toSteal]);
+                enemyAdvantage!.Remove(toSteal);
+            }
+            //if only one enemy in each group, join group with least friends
+            else{
+                var leastFriends = canReassign.MinBy(gr => gr.Count(ch => ch.Team == toReassign.Team));
+                leastFriends!.Add(toReassign);
+            }
+        }
+        originGroup.Remove(toReassign);
+        if(originGroup.Count == 0){groups.Remove(originGroup);}
+    }
+
+    public static void RemoveCorpse(List<List<Character>> groups){
+        for(int i = 0; i < groups.Count; i++){
+            groups[i] = groups[i].Where(ch => ch.CurrentZyw > 0).ToList();
         }
     }
 }
