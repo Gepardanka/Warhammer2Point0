@@ -1,4 +1,11 @@
-import { Component, effect, inject, OnInit, signal } from '@angular/core';
+import {
+  Component,
+  effect,
+  inject,
+  OnDestroy,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { GameService } from '../../services/game.service';
 import { NgFor, NgIf } from '@angular/common';
 import { CharacterDTO } from '../../models/character-dto.model';
@@ -12,7 +19,7 @@ import { MenuService } from '../../services/menu.service';
   templateUrl: './menu.component.html',
   styleUrl: './menu.component.css',
 })
-export class MenuComponent implements OnInit {
+export class MenuComponent implements OnInit, OnDestroy {
   private readonly gameService = inject(GameService);
   private readonly menuService = inject(MenuService);
 
@@ -23,8 +30,10 @@ export class MenuComponent implements OnInit {
   CharacterTeam = CharacterTeam;
   isGameLoading = signal(false);
 
+  private stopEffect;
+
   constructor() {
-    effect(() => {
+    this.stopEffect = effect(() => {
       if (this.gameService.gameStarted()) {
         this.isGameLoading.set(false);
       }
@@ -38,5 +47,9 @@ export class MenuComponent implements OnInit {
 
   ngOnInit(): void {
     this.gameService.fetchDefaultCharacters();
+  }
+
+  ngOnDestroy(): void {
+    this.stopEffect.destroy();
   }
 }
