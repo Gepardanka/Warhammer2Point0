@@ -20,6 +20,10 @@
     position: absolute;
 }
 
+.dead{
+    opacity: 0;
+}
+
 .animate-damage {
     animation: damageAnim 0.2s linear 10;
 }

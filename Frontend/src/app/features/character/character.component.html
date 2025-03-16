@@ -1,4 +1,4 @@
-<div class="character" [ngStyle]="position">
+<div #characterContainer class="character" [ngStyle]="position">
     <div class="health-bar">
         <div class="health-fill" [style.width.%]="health() * 100"></div>
     </div>

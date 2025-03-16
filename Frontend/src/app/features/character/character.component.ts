@@ -4,6 +4,7 @@ import {
   computed,
   effect,
   ElementRef,
+  inject,
   Input,
   input,
   OnDestroy,
@@ -12,6 +13,8 @@ import {
   WritableSignal,
 } from '@angular/core';
 import { CharacterDTO } from '../../models/character-dto.model';
+import { AudioService } from '../../services/audio.service';
+import { AudioTrack } from '../../models/audio-track.enum';
 
 @Component({
   selector: 'app-character',
@@ -21,6 +24,8 @@ import { CharacterDTO } from '../../models/character-dto.model';
 })
 export class CharacterComponent implements OnInit, OnDestroy {
   @ViewChild('animationElement') animationElement!: ElementRef<HTMLDivElement>;
+  @ViewChild('characterContainer')
+  characterElement!: ElementRef<HTMLDivElement>;
   @Input({ required: true }) position!: {
     left?: string;
     right?: string;
@@ -32,10 +37,15 @@ export class CharacterComponent implements OnInit, OnDestroy {
   @Input({ required: true }) damagedCharId!: WritableSignal<string>;
   character = input.required<CharacterDTO>();
 
+  audioService = inject(AudioService);
+
   health = computed(() => this.character().health / this.maxHealth);
 
   private maxHealth = 0;
   private stopEffect;
+  private hitTakeSFX!: AudioTrack;
+  private attackSFX!: AudioTrack;
+  private deathSFX!: AudioTrack;
 
   constructor() {
     this.stopEffect = effect(() => {
@@ -50,9 +60,12 @@ export class CharacterComponent implements OnInit, OnDestroy {
     return new Promise((resolve) => {
       const animEl = this.animationElement.nativeElement;
       animEl.classList.add('animate-damage');
-      console.log(
-        `${this.character.name}, ${this.character().health}, ${this.maxHealth}`
-      );
+      if (this.character().health > 0)
+        this.audioService.playSFX(this.hitTakeSFX);
+      else {
+        this.audioService.playSFX(this.deathSFX);
+        this.characterElement.nativeElement.classList.add('dead');
+      }
       setTimeout(() => {
         animEl.classList.remove('animate-damage');
         resolve();
@@ -62,6 +75,37 @@ export class CharacterComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.maxHealth = this.character().health;
+
+    switch (this.character().name) {
+      case 'Ork':
+        this.hitTakeSFX = AudioTrack.OrcHittake;
+        this.deathSFX = AudioTrack.OrcDeath;
+        this.attackSFX = AudioTrack.OrcAttack;
+        break;
+      case 'Człowiek':
+        this.hitTakeSFX = AudioTrack.WarriorHittake;
+        this.deathSFX = AudioTrack.WarriorDeath;
+        this.attackSFX = AudioTrack.WarriorAttack;
+        break;
+
+      case 'Niziołek':
+        this.hitTakeSFX = AudioTrack.NiziolekHittake;
+        this.deathSFX = AudioTrack.OrcDeath;
+        this.attackSFX = AudioTrack.NiziolekAttack;
+        break;
+
+      case 'Krasnolud':
+        this.hitTakeSFX = AudioTrack.DwarfHittake;
+        this.deathSFX = AudioTrack.DwarfDeath;
+        this.attackSFX = AudioTrack.DwarfAttack;
+        break;
+
+      case 'Elf':
+        this.hitTakeSFX = AudioTrack.ElfHittake;
+        this.deathSFX = AudioTrack.ElfDeath;
+        this.attackSFX = AudioTrack.ElfAttack;
+        break;
+    }
   }
 
   ngOnDestroy(): void {
