@@ -72,6 +72,10 @@ export class GameService {
       .subscribe();
   }
 
+  goToMenu() {
+    this._currentRoundHistory.set(null);
+  }
+
   private mapToCharactersWithAvatarUrl(
     characters: CharacterDTO[]
   ): Observable<CharacterDTO[]> {
