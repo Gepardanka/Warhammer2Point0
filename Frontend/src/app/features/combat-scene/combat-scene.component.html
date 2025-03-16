@@ -57,22 +57,24 @@
     }
   </div>
 </div> -->
+<div class="background">
+  <div class="relative w-full h-screen flex py-10 overflow-x-hidden">
+    <div class="relative w-1/2 h-full">
+      <div *ngFor="let char of teamA(); let index = index; trackBy: trackByFn">
+        <app-character [character]="char" [position]="getImagePosition(index, false)"
+          [damagedCharId]="damagedCharacter"></app-character>
+      </div>
+    </div>
 
-<div class="relative w-full h-screen flex py-10 overflow-x-hidden">
-  <div class="relative w-1/2 h-full">
-    <div *ngFor="let char of teamA(); let index = index; trackBy: trackByFn">
-      <app-character [character]="char" [position]="getImagePosition(index, false)"
-        [damagedCharId]="damagedCharacter"></app-character>
+    <div class="relative w-1/2 h-full">
+      <div *ngFor="let char of teamB(); let index = index; trackBy: trackByFn">
+        <app-character [character]="char" [position]="getImagePosition(index, true)"
+          [damagedCharId]="damagedCharacter"></app-character>
+      </div>
+    </div>
+
+    <div class="battle-container">
+      <div class="animation" #animationElement><img src="/assets/images/equipment/sword_icon.png"></div>
     </div>
   </div>
-
-  <div class="relative w-1/2 h-full">
-    <div *ngFor="let char of teamB(); let index = index; trackBy: trackByFn">
-      <app-character [character]="char" [position]="getImagePosition(index, true)"
-        [damagedCharId]="damagedCharacter"></app-character>
-    </div>
-  </div>
-
-  <div class="battle-container">
-    <div class="animation" #animationElement><img src="/assets/images/equipment/sword_icon.png"></div>
-  </div>
+</div>
