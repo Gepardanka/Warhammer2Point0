@@ -35,8 +35,8 @@ public class FightLogicTests{
         List<Models.Character> fighters = new(){
             new Models.Character{
                 Team = Models.CharacterTeam.TeamA,
-                WW = 60,
-                Zr = 60,
+                WW = 90,
+                Zr = 90,
                 A = 3,
                 S = 4,
                 Wt = 6,
@@ -108,7 +108,12 @@ public class FightLogicTests{
         Models.RoundHistory roundHistory = new();
         Services.AttackSetUp attackSetUp = new(diceRolls, roundHistory);
         Services.FightSimulator fightSimulator = new(fighters, diceRolls, attackSetUp, roundHistory);
-        var winner = fightSimulator.Fight().WinnerTeam;
-        Assert.Equal(Models.CharacterTeam.TeamA, winner);
+
+        var wins = new List<Models.CharacterTeam>();
+        for(int i = 0; i < 1000; i++){
+            wins.Add(fightSimulator.Fight().WinnerTeam);
+        }
+        var fail = wins.Any(team => team == Models.CharacterTeam.TeamB);
+        Assert.False(fail);
     }
 }

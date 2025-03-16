@@ -20,7 +20,7 @@ public class FightSimulator
         _roundHistory.TeamA = inBattle.Where(x => x.Team == CharacterTeam.TeamA).Select(CharacterDTO.CharacterToDTO).ToList();
         _roundHistory.TeamB = inBattle.Where(x => x.Team == CharacterTeam.TeamB).Select(CharacterDTO.CharacterToDTO).ToList();
 
-        int stop = 50;
+        int stop = 1000;
         for (int i = 0; i < stop; i++)
         {
             for (int j = 0; j < inBattle.Count; j++)
@@ -32,24 +32,23 @@ public class FightSimulator
                 }
 
                 Character attacking = inBattle[j];
+                if(attacking.CurrentZyw <1){continue;}
                 List<Character> group = groups.First(x => x.Contains(attacking));
-                if(attacking.CurrentZyw <= 0){
-                    if(!group.Any(x => x.CurrentZyw > 0)){
-                        groups.Remove(group);
-                    }
-                    continue;
-                }
+
                 
-                if(!group.Any(x => x.Team != attacking.Team
-                    && x.CurrentZyw > 0)){
-                   GroupLogic.ReassignToGroups(attacking, groups.Where(x => x.Any(y => y.CurrentZyw > 0)).ToList());
+                if(!group.Any(x => x.Team != attacking.Team)){
+                   GroupLogic.ReassignToGroups(attacking, groups);
+                   System.Console.WriteLine("Reassigned group");
                    continue;
                 }
                 Character defending = group.Where(x => x.CurrentZyw > 0).First(x => x.Team != attacking.Team);
-                
+
                 _attackSetUp.ChooseAttack(attacking, defending, StatsModifications.GroupMod(group, attacking.Team));
+                GroupLogic.RemoveCorpse(groups);
             }
+            
         }
+        System.Console.WriteLine(_roundHistory.Rounds.Count);
         _roundHistory.WinnerTeam = TeamMoreHP(inBattle);
         return _roundHistory;
     }
@@ -71,10 +70,10 @@ public class FightSimulator
         int aHP = 0;
         int bHP = 0; 
         foreach(var character in characters){
-            if(character.Team == CharacterTeam.TeamA){
+            if(character.Team == CharacterTeam.TeamA && character.CurrentZyw > 0){
                 aHP += character.CurrentZyw;
             }
-            else{
+            else if(character.CurrentZyw > 0){
                 bHP += character.CurrentZyw;
             }
         }
