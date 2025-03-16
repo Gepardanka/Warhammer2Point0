@@ -9,15 +9,18 @@ export class AudioService {
   private tracks: { [key: string]: HTMLAudioElement } = {};
 
   constructor() {
-    this.tracks[AudioTrack.MenuBackground] = new Audio(
-      `${this.musicPath}/MenuBackground.mp3`
-    );
-    this.tracks[AudioTrack.StartBattle] = new Audio(
-      `${this.musicPath}/StartBattleSFX.mp3`
-    );
-    this.tracks[AudioTrack.BattleBackground] = new Audio(
-      `${this.musicPath}/BattleBackground.mp3`
-    );
+    // this.tracks[AudioTrack.MenuBackground] = new Audio(
+    //   `${this.musicPath}/MenuBackground.mp3`
+    // );
+    // this.tracks[AudioTrack.StartBattle] = new Audio(
+    //   `${this.musicPath}/StartBattleSFX.mp3`
+    // );
+    // this.tracks[AudioTrack.BattleBackground] = new Audio(
+    //   `${this.musicPath}/BattleBackground.mp3`
+    // );
+
+    // this.tracks[AudioTrack.MenuBackground].loop = true;
+    // this.tracks[AudioTrack.BattleBackground].loop = true;
 
     // Characters
     this.tracks[AudioTrack.DwarfAttack] = new Audio(
@@ -77,7 +80,7 @@ export class AudioService {
       `${this.musicPath}/Weapons/sword-hit.mp3`
     );
     this.tracks[AudioTrack.WeaponSwoossh] = new Audio(
-      `${this.musicPath}/Weapons/weapon-swoossh.mp3`
+      `${this.musicPath}/Weapons/weapon-swooosh.mp3`
     );
   }
 
