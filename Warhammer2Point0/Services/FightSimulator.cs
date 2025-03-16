@@ -20,7 +20,7 @@ public class FightSimulator
         _roundHistory.TeamA = inBattle.Where(x => x.Team == CharacterTeam.TeamA).Select(CharacterDTO.CharacterToDTO).ToList();
         _roundHistory.TeamB = inBattle.Where(x => x.Team == CharacterTeam.TeamB).Select(CharacterDTO.CharacterToDTO).ToList();
 
-        int stop = 10000;
+        int stop = 50;
         for (int i = 0; i < stop; i++)
         {
             for (int j = 0; j < inBattle.Count; j++)
@@ -50,7 +50,8 @@ public class FightSimulator
                 _attackSetUp.ChooseAttack(attacking, defending, StatsModifications.GroupMod(group, attacking.Team));
             }
         }
-        throw new Exception($"Fight didn't finish in {stop} rounds;");
+        _roundHistory.WinnerTeam = TeamMoreHP(inBattle);
+        return _roundHistory;
     }
     private CharacterTeam? CheckForWinner(List<Character> inBattle){
         if (!inBattle.Where(x => x.Team == CharacterTeam.TeamA
@@ -64,5 +65,20 @@ public class FightSimulator
             return CharacterTeam.TeamA;
         }
         return null;
+    }
+
+    private CharacterTeam TeamMoreHP(List<Character> characters){
+        int aHP = 0;
+        int bHP = 0; 
+        foreach(var character in characters){
+            if(character.Team == CharacterTeam.TeamA){
+                aHP += character.CurrentZyw;
+            }
+            else{
+                bHP += character.CurrentZyw;
+            }
+        }
+        if(aHP > bHP){ return CharacterTeam.TeamA;}
+        return CharacterTeam.TeamB;
     }
 }
