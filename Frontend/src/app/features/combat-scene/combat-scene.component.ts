@@ -14,6 +14,9 @@ import { CharacterComponent } from '../character/character.component';
 import { CharacterDTO } from '../../models/character-dto.model';
 import { HitSuccessMissReason } from '../../models/hit-success-miss-reason.model';
 import { asyncScheduler, SchedulerAction } from 'rxjs';
+import { AudioService } from '../../services/audio.service';
+import { AudioTrack } from '../../models/audio-track.enum';
+import { Round } from '../../models/round.model';
 
 @Component({
   selector: 'app-combat-scene',
@@ -24,6 +27,7 @@ import { asyncScheduler, SchedulerAction } from 'rxjs';
 export class CombatSceneComponent {
   @ViewChild('animationElement') animationElement!: ElementRef<HTMLDivElement>;
   gameService = inject(GameService);
+  audioService = inject(AudioService);
 
   teamA = signal<CharacterDTO[]>([]);
   teamB = signal<CharacterDTO[]>([]);
@@ -41,6 +45,7 @@ export class CombatSceneComponent {
 
   startBattle() {
     const component = this;
+    this.audioService.play(AudioTrack.BattleBackground);
 
     asyncScheduler.schedule(
       function processRound(this: SchedulerAction<number>) {
@@ -50,7 +55,7 @@ export class CombatSceneComponent {
         }
 
         component.isAnimating.set(true);
-
+        component.audioService.playSFX(AudioTrack.WeaponSwoossh);
         component.playAttackAnimationAndSFX().then(() => {
           component.isAnimating.set(false);
           component.manageRoundDamage();
@@ -68,6 +73,13 @@ export class CombatSceneComponent {
     return new Promise((resolve) => {
       const animEl = this.animationElement.nativeElement;
       animEl.classList.add('animate');
+      setTimeout(() => {
+        switch (this.roundHistory.rounds[0].hitSuccessFailReason) {
+          case HitSuccessMissReason.Parry:
+            this.audioService.playSFX(AudioTrack.SwordAttack);
+            break;
+        }
+      }, 600);
 
       setTimeout(() => {
         animEl.classList.remove('animate');
