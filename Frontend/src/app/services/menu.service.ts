@@ -26,8 +26,8 @@ export class MenuService {
     }
   }
 
-  addCharacter(char: CharacterDTO, team: CharacterTeam) {
-    switch (team) {
+  addCharacter(char: CharacterDTO) {
+    switch (char.team) {
       case CharacterTeam.TeamA:
         this.addCharacterToCollection(this.selectedCharactersLeft, char);
         break;
@@ -40,10 +40,10 @@ export class MenuService {
   removeCharacter(index: number, team: CharacterTeam) {
     switch (team) {
       case CharacterTeam.TeamA:
-        this.removeCharacterToCollection(this.selectedCharactersLeft, index);
+        this.removeCharacterFromCollection(this.selectedCharactersLeft, index);
         break;
       case CharacterTeam.TeamB:
-        this.removeCharacterToCollection(this.selectedCharactersRight, index);
+        this.removeCharacterFromCollection(this.selectedCharactersRight, index);
         break;
     }
   }
@@ -55,7 +55,7 @@ export class MenuService {
     collection.update((array) => [...array, char]);
   }
 
-  private removeCharacterToCollection(
+  private removeCharacterFromCollection(
     collection: WritableSignal<CharacterDTO[]>,
     index: number
   ) {
