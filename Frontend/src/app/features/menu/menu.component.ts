@@ -12,6 +12,8 @@ import { CharacterDTO } from '../../models/character-dto.model';
 import { TeamListComponent } from './team-list/team-list.component';
 import { CharacterTeam } from '../../models/character-team.model';
 import { MenuService } from '../../services/menu.service';
+import { AudioService } from '../../services/audio.service';
+import { AudioTrack } from '../../models/audio-track.enum';
 
 @Component({
   selector: 'app-menu',
@@ -22,6 +24,7 @@ import { MenuService } from '../../services/menu.service';
 export class MenuComponent implements OnInit, OnDestroy {
   private readonly gameService = inject(GameService);
   private readonly menuService = inject(MenuService);
+  private readonly audioService = inject(AudioService);
 
   private selectedCharacters = this.menuService.getSelectedCharacters(
     CharacterTeam.Both
@@ -33,6 +36,7 @@ export class MenuComponent implements OnInit, OnDestroy {
   private stopEffect;
 
   constructor() {
+    this.audioService.play(AudioTrack.MenuBackground);
     this.stopEffect = effect(() => {
       if (this.gameService.gameStarted()) {
         this.isGameLoading.set(false);
@@ -41,6 +45,7 @@ export class MenuComponent implements OnInit, OnDestroy {
   }
 
   startBattle() {
+    this.audioService.playSFX(AudioTrack.StartBattle);
     this.gameService.fetchBattleHistory(this.selectedCharacters());
     this.isGameLoading.set(true);
   }
