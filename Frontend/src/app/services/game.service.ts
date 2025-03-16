@@ -1,6 +1,14 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { ApiService } from './api.service';
-import { EMPTY, Observable, catchError, map, switchMap, tap } from 'rxjs';
+import {
+  EMPTY,
+  Observable,
+  catchError,
+  forkJoin,
+  map,
+  switchMap,
+  tap,
+} from 'rxjs';
 import { RoundHistory } from '../models/round-history.model';
 import { CharacterDTO } from '../models/character-dto.model';
 import { HttpClient } from '@angular/common/http';
@@ -44,10 +52,20 @@ export class GameService {
     this.apiService
       .post<RoundHistory>('fight/battleresult', model)
       .pipe(
-        tap((result) => {
-          this._currentRoundHistory.set(result);
-        }),
+        switchMap((result) =>
+          forkJoin({
+            teamA: this.mapToCharactersWithAvatarUrl(result.teamA),
+            teamB: this.mapToCharactersWithAvatarUrl(result.teamB),
+          }).pipe(
+            tap(({ teamA, teamB }) => {
+              result.teamA = teamA;
+              result.teamB = teamB;
+              this._currentRoundHistory.set(result);
+            })
+          )
+        ),
         catchError(() => {
+          console.error('Error happened while fetching battle history');
           return EMPTY;
         })
       )
