@@ -5,7 +5,7 @@ public class CharacterDTO
     public string BigURL { get; set; } = "";
     public string SmallURL { get; set; } = "";
     public required string Name { get; set; }
-    public Guid Guid { get; set; } = Guid.NewGuid();
+    public Guid Guid { get; set; }
     public CharacterTeam Team { get; set; }
     public int MeleeSkill { get; set; }
     public int Dexterity { get; set; }
