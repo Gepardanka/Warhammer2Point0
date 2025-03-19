@@ -46,8 +46,17 @@ export class MenuComponent implements OnInit, OnDestroy {
 
   startBattle() {
     this.audioService.playSFX(AudioTrack.StartBattle);
-    this.gameService.fetchBattleHistory(this.selectedCharacters());
+    this.startBattleAfterDelay();
     this.isGameLoading.set(true);
+  }
+
+  startBattleAfterDelay(): Promise<void> {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        this.gameService.fetchBattleHistory(this.selectedCharacters());
+        resolve();
+      }, 2000);
+    });
   }
 
   ngOnInit(): void {

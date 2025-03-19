@@ -9,18 +9,18 @@ export class AudioService {
   private tracks: { [key: string]: HTMLAudioElement } = {};
 
   constructor() {
-    // this.tracks[AudioTrack.MenuBackground] = new Audio(
-    //   `${this.musicPath}/MenuBackground.mp3`
-    // );
-    // this.tracks[AudioTrack.StartBattle] = new Audio(
-    //   `${this.musicPath}/StartBattleSFX.mp3`
-    // );
-    // this.tracks[AudioTrack.BattleBackground] = new Audio(
-    //   `${this.musicPath}/BattleBackground.mp3`
-    // );
+    this.tracks[AudioTrack.MenuBackground] = new Audio(
+      `${this.musicPath}/menu_music.mp3`
+    );
+    this.tracks[AudioTrack.StartBattle] = new Audio(
+      `${this.musicPath}/battle-start-sound.mp3`
+    );
+    this.tracks[AudioTrack.BattleBackground] = new Audio(
+      `${this.musicPath}/fight_music.mp3`
+    );
 
-    // this.tracks[AudioTrack.MenuBackground].loop = true;
-    // this.tracks[AudioTrack.BattleBackground].loop = true;
+    this.tracks[AudioTrack.MenuBackground].loop = true;
+    this.tracks[AudioTrack.BattleBackground].loop = true;
 
     // Characters
     this.tracks[AudioTrack.DwarfAttack] = new Audio(
