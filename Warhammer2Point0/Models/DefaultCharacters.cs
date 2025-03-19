@@ -9,7 +9,6 @@ public class DefaultCharacters
             new() {
                 BigURL = "",
                 SmallURL = "",
-                Guid = Guid.NewGuid(),
                 Name = "Człowiek",
                 Team = CharacterTeam.TeamA,
                 MeleeSkill = 51,
@@ -39,7 +38,6 @@ public class DefaultCharacters
             new() {
                 BigURL = "",
                 SmallURL = "",
-                Guid = Guid.NewGuid(),
                 Name = "Elf",
                 Team = CharacterTeam.TeamA,
                 MeleeSkill = 51,
@@ -69,7 +67,6 @@ public class DefaultCharacters
             new() {
                 BigURL = "",
                 SmallURL = "",
-                Guid = Guid.NewGuid(),
                 Name = "Krasnolud",
                 Team =  CharacterTeam.TeamB,
                 MeleeSkill = 61,
@@ -94,7 +91,6 @@ public class DefaultCharacters
             new() {
                 BigURL = "",
                 SmallURL = "",
-                Guid = Guid.NewGuid(),
                 Name = "Niziołek",
                 Team = CharacterTeam.TeamA,
                 MeleeSkill = 41,
@@ -119,7 +115,6 @@ public class DefaultCharacters
             new() {
                 BigURL = "",
                 SmallURL = "",
-                Guid = Guid.NewGuid(),
                 Name = "Ork",
                 Team = CharacterTeam.TeamB,
                 MeleeSkill = 55,
