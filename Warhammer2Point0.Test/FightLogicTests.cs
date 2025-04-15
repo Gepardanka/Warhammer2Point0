@@ -8,7 +8,7 @@ public class FightLogicTests{
                 Team = Models.CharacterTeam.TeamA,
                 WW = 10,
                 A = 1,
-                CurrentZyw = 1,
+                Zyw = 1,
                 Hands = new Models.Hands{
                     RightHand = new Models.MeleeWeapon{
                         Modifier = 0
@@ -17,19 +17,18 @@ public class FightLogicTests{
             },
             new Models.Character{
                 Team = Models.CharacterTeam.TeamB,
-                CurrentZyw = 1
+                Zyw = 1
             }
         ];
         FakeDiceRolls fakeDiceRolls = new() {
             IntsD10 = [2, 1, 1],
             IntsD100 = [9]
         };
-        Models.RoundHistory roundHistory = new();
-        Services.AttackSetUp attackSetUp = new(fakeDiceRolls, roundHistory);
-        Services.FightSimulator fightSimulator = new(fighters, fakeDiceRolls, attackSetUp, roundHistory);
+        Services.FightSimulator fightSimulator = new(fighters, fakeDiceRolls);
         Models.CharacterTeam winnerTeam = fightSimulator.Fight().WinnerTeam;
         Assert.Equal(Models.CharacterTeam.TeamA, winnerTeam);
     }
+
     [Fact]
     public void FivePepsFight(){
         List<Models.Character> fighters = new(){
@@ -40,7 +39,7 @@ public class FightLogicTests{
                 A = 3,
                 S = 4,
                 Wt = 6,
-                CurrentZyw = 16,
+                Zyw = 16,
                 Hands = new Models.Hands{
                     RightHand = new Models.MeleeWeapon{
                         Modifier = 1
@@ -54,7 +53,7 @@ public class FightLogicTests{
                 A = 3,
                 S = 4,
                 Wt = 6,
-                CurrentZyw = 16,
+                Zyw = 16,
                 Hands = new Models.Hands{
                     RightHand = new Models.MeleeWeapon{
                         Modifier = 1
@@ -68,7 +67,7 @@ public class FightLogicTests{
                 A = 3,
                 S = 4,
                 Wt = 6,
-                CurrentZyw = 16,
+                Zyw = 16,
                 Hands = new Models.Hands{
                     RightHand = new Models.MeleeWeapon{
                         Modifier = 1
@@ -82,7 +81,7 @@ public class FightLogicTests{
                 A = 1,
                 S = 4,
                 Wt = 6,
-                CurrentZyw = 15,
+                Zyw = 15,
                 Hands = new Models.Hands{
                     RightHand = new Models.MeleeWeapon{
                         Modifier = 0
@@ -96,7 +95,7 @@ public class FightLogicTests{
                 A = 1,
                 S = 4,
                 Wt = 6,
-                CurrentZyw = 15,
+                Zyw = 15,
                 Hands = new Models.Hands{
                     RightHand = new Models.MeleeWeapon{
                         Modifier = 0
@@ -105,9 +104,7 @@ public class FightLogicTests{
             },
         };
         DiceRolls diceRolls = new();
-        Models.RoundHistory roundHistory = new();
-        Services.AttackSetUp attackSetUp = new(diceRolls, roundHistory);
-        Services.FightSimulator fightSimulator = new(fighters, diceRolls, attackSetUp, roundHistory);
+        Services.FightSimulator fightSimulator = new(fighters, diceRolls);
 
         var wins = new List<Models.CharacterTeam>();
         for(int i = 0; i < 1000; i++){

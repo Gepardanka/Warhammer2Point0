@@ -18,18 +18,14 @@ public class FightController: ControllerBase{
     [Route("battleResult")]
     public RoundHistory Battle(IEnumerable<CharacterDTO> charactersDTO){
         DiceRolls diceRolls = new DiceRolls();
-        RoundHistory roundHistory = new RoundHistory{};
-        AttackSetUp attackSetUp = new AttackSetUp(diceRolls, roundHistory);
         List<Character> characters = charactersDTO.Select(CharacterDTO.DTOToCharacter).ToList();
 
         FightSimulator fight = new FightSimulator(
             characters,
-            diceRolls,
-            attackSetUp,
-            roundHistory);
+            diceRolls);
 
         CharacterTeam winnerTeam = fight.Fight().WinnerTeam;
-        return roundHistory;
+        return fight.Fight();
     }
 }
 

@@ -61,9 +61,9 @@ public static class GroupLogic{
         if(originGroup.Count == 0){groups.Remove(originGroup);}
     }
 
-    public static void RemoveCorpse(List<List<Character>> groups){
+    public static void RemoveCorpse(List<List<Character>> groups, Dictionary<Guid, CharacterStatus> statuses){
         for(int i = 0; i < groups.Count; i++){
-            groups[i] = groups[i].Where(ch => ch.CurrentZyw > 0).ToList();
+            groups[i] = groups[i].Where(ch => statuses[ch.Guid].CurrentZyw > 0).ToList();
         }
     }
 }

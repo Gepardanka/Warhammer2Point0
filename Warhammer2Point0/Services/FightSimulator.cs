@@ -4,14 +4,20 @@ public class FightSimulator
 {
     readonly List<Character> _characters;
     readonly IDiceRolls _diceRolls;
-    readonly IAttackSetUp _attackSetUp;
-    RoundHistory _roundHistory;
-    public FightSimulator(List<Character> characters, IDiceRolls diceRolls, IAttackSetUp attackSetUp, RoundHistory roundHistory)
+    readonly RoundHistory _roundHistory;
+    readonly Dictionary<Guid, CharacterStatus> _statuses;
+    public FightSimulator(List<Character> characters, IDiceRolls diceRolls)
     {
-        _roundHistory = roundHistory;
+        _roundHistory = new RoundHistory();
         _characters = characters;
         _diceRolls = diceRolls;
-        _attackSetUp = attackSetUp;
+        _statuses = characters.ToDictionary(
+            key => key.Guid,
+            character => new CharacterStatus{
+                CurrentZyw = character.Zyw,
+                AttacksCount = character.A
+            }
+        );
     }
     public RoundHistory Fight()
     {
@@ -19,7 +25,7 @@ public class FightSimulator
         List<List<Character>> groups = GroupLogic.MakeGroups(inBattle);
         _roundHistory.TeamA = inBattle.Where(x => x.Team == CharacterTeam.TeamA).Select(CharacterDTO.CharacterToDTO).ToList();
         _roundHistory.TeamB = inBattle.Where(x => x.Team == CharacterTeam.TeamB).Select(CharacterDTO.CharacterToDTO).ToList();
-
+        
         int stop = 1000;
         for (int i = 0; i < stop; i++)
         {
@@ -32,7 +38,7 @@ public class FightSimulator
                 }
 
                 Character attacking = inBattle[j];
-                if(attacking.CurrentZyw <1){continue;}
+                if(_statuses[attacking.Guid].CurrentZyw <1){continue;}
                 List<Character> group = groups.First(x => x.Contains(attacking));
 
                 
@@ -41,10 +47,12 @@ public class FightSimulator
                    System.Console.WriteLine("Reassigned group");
                    continue;
                 }
-                Character defending = group.Where(x => x.CurrentZyw > 0).First(x => x.Team != attacking.Team);
+                Character defending = group.Where(x => _statuses[x.Guid].CurrentZyw > 0).First(x => x.Team != attacking.Team);
+                _statuses[attacking.Guid].AttackMod = StatsModifications.GroupMod(group, attacking.Team);
 
-                _attackSetUp.ChooseAttack(attacking, defending, StatsModifications.GroupMod(group, attacking.Team));
-                GroupLogic.RemoveCorpse(groups);
+                AttackSetUp attackSetUp = new AttackSetUp(_diceRolls, _roundHistory, _statuses, attacking, defending);
+                attackSetUp.ChooseAttack();
+                GroupLogic.RemoveCorpse(groups, _statuses);
             }
             
         }
@@ -54,12 +62,12 @@ public class FightSimulator
     }
     private CharacterTeam? CheckForWinner(List<Character> inBattle){
         if (!inBattle.Where(x => x.Team == CharacterTeam.TeamA
-            && x.CurrentZyw > 0).Any())
+            && _statuses[x.Guid].CurrentZyw > 0).Any())
         {
             return CharacterTeam.TeamB;
         }
         if (!inBattle.Where(x => x.Team == CharacterTeam.TeamB
-            && x.CurrentZyw > 0).Any())
+            && _statuses[x.Guid].CurrentZyw > 0).Any())
         {
             return CharacterTeam.TeamA;
         }
@@ -70,11 +78,11 @@ public class FightSimulator
         int aHP = 0;
         int bHP = 0; 
         foreach(var character in characters){
-            if(character.Team == CharacterTeam.TeamA && character.CurrentZyw > 0){
-                aHP += character.CurrentZyw;
+            if(character.Team == CharacterTeam.TeamA && _statuses[character.Guid].CurrentZyw > 0){
+                aHP += _statuses[character.Guid].CurrentZyw;
             }
-            else if(character.CurrentZyw > 0){
-                bHP += character.CurrentZyw;
+            else if(_statuses[character.Guid].CurrentZyw > 0){
+                bHP += _statuses[character.Guid].CurrentZyw;
             }
         }
         if(aHP > bHP){ return CharacterTeam.TeamA;}

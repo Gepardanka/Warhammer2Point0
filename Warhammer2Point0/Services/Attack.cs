@@ -1,11 +1,11 @@
 using WarhammerFightSimulator.Models;
 namespace WarhammerFightSimulator.Services;
-public abstract class Attack(Character attacking, Character defending, IDiceRolls diceRolls, int wwMod)
-{
-    protected readonly Character _attacking = attacking;
-    protected readonly Character _defending = defending;
-    protected readonly IDiceRolls _diceRolls = diceRolls;
-    protected int _wwMod = wwMod;
+    public abstract class Attack(Character attacking, Character defending, IDiceRolls diceRolls, Dictionary<Guid, CharacterStatus> statuses)
+    {
+        protected readonly Character _attacking = attacking;
+        protected readonly Character _defending = defending;
+        protected readonly IDiceRolls _diceRolls = diceRolls;
+        protected readonly Dictionary<Guid, CharacterStatus> _statuses = statuses;
 
     public abstract Round MakeAttack(IEquipmentItem? attackingHand);
     protected int HitPlace(Armour armour, int roll)
@@ -26,12 +26,12 @@ public abstract class Attack(Character attacking, Character defending, IDiceRoll
     }
     protected bool CanDodge()
     {
-        return _defending.Skills.ContainsKey(CharacterSkill.Unik) && _defending.IsDodging;
+        return _defending.Skills.ContainsKey(CharacterSkill.Unik) && _statuses[_defending.Guid].IsDodging;
     }
     protected bool Dodge(Weapon? attackingWeapon, Round round)
     {
         bool value = TotalDodgeValue(attackingWeapon) >= _diceRolls.D100();
-        _defending.IsDodging = false;
+        _statuses[_defending.Guid].IsDodging = false;
         if (value) { round.HitSuccessFailReason = HitSuccessMissReason.Dodge; }
         return value;
 
@@ -45,20 +45,21 @@ public abstract class Attack(Character attacking, Character defending, IDiceRoll
     }
     protected bool CanParry()
     {
+    
         if (_defending.Hands.RightHand != null)
         {
-            return _defending.IsParring && _defending.Hands.RightHand.EquipmentItemType == EquipmentItemType.MeleeWeapon;
+            return _statuses[_defending.Guid].IsParring && _defending.Hands.RightHand.EquipmentItemType == EquipmentItemType.MeleeWeapon;
         }
         if (_defending.Hands.LeftHand != null)
         {
-            return _defending.IsParring && _defending.Hands.LeftHand.EquipmentItemType == EquipmentItemType.MeleeWeapon;
+            return _statuses[_defending.Guid].IsParring && _defending.Hands.LeftHand.EquipmentItemType == EquipmentItemType.MeleeWeapon;
         }
         return false;
     }
     protected bool Parry(Weapon? attackingWeapon, Round round)
     {
         bool value = _diceRolls.D100() <= TotalParryValue(attackingWeapon);
-        _defending.IsParring = false;
+        _statuses[_defending.Guid].IsParring = false;
         if (value) { round.HitSuccessFailReason = HitSuccessMissReason.Parry; }
         return value;
     }
@@ -95,21 +96,26 @@ public abstract class Attack(Character attacking, Character defending, IDiceRoll
         return false;
     }
 }
-public class UnarmedAttack(Character attacking, Character defending, IDiceRolls diceRolls, int wwMod) : Attack(attacking, defending, diceRolls, wwMod)
+public class UnarmedAttack : Attack
 {
+    public UnarmedAttack(Character attacking, Character defending, IDiceRolls diceRolls, Dictionary<Guid, CharacterStatus> statuses)
+        : base(attacking, defending, diceRolls, statuses){}
+
     public override Round MakeAttack(IEquipmentItem? hand)
     {
-        Round round = new Round();
-        round.AttackingWeaponName = WeaponName.Unarmed;
-        round.DefendingCharID = _defending.Guid;
-        round.DefendingCharCurrentHP = _defending.CurrentZyw;
+        Round round = new()
+        {
+            AttackingWeaponName = WeaponName.Unarmed,
+            DefendingCharID = _defending.Guid,
+            DefendingCharCurrentHP = _statuses[_defending.Guid].CurrentZyw
+        };
 
         var mod = StatsModifications.Bijatyka(_attacking);
         int damage = mod.DamageMod;
-        _wwMod += mod.WWMod;
+        _statuses[_attacking.Guid].AttackMod += mod.WWMod;
         int roll = _diceRolls.D100();
 
-        if (_attacking.WW + _wwMod < roll)
+        if (_attacking.WW + _statuses[_attacking.Guid].AttackMod < roll)
         {
             round.HitSuccessFailReason = HitSuccessMissReason.Miss;
             return round;
@@ -129,22 +135,25 @@ public class UnarmedAttack(Character attacking, Character defending, IDiceRolls 
         int armour = HitPlace(_defending.Armour, d100Roll) * 2;
         if (damage - _defending.Wt - armour > 0)
         {
-            _defending.CurrentZyw = _defending.CurrentZyw + _defending.Wt + armour - damage;
-            round.DefendingCharCurrentHP = _defending.CurrentZyw;
+            _statuses[_defending.Guid].CurrentZyw 
+                = _statuses[_defending.Guid].CurrentZyw + _defending.Wt + armour - damage;
+            round.DefendingCharCurrentHP = _statuses[_defending.Guid].CurrentZyw;
         }
     }
 }
-public class MeleeAttack(Character attacking, Character defending, IDiceRolls diceRolls, int wwMod) : Attack(attacking, defending, diceRolls, wwMod)
+public class MeleeAttack : Attack
 {
+    public MeleeAttack(Character attacking, Character defending, IDiceRolls diceRolls, Dictionary<Guid, CharacterStatus> statuses)
+        : base(attacking, defending, diceRolls, statuses){}
     public override Round MakeAttack(IEquipmentItem? attackingHand)
     {
         Round round = new Round();
         MeleeWeapon attackingWeapon = (MeleeWeapon)attackingHand!;
         round.AttackingWeaponName = attackingWeapon.WeaponName;
-        round.DefendingCharCurrentHP = _defending.CurrentZyw;
+        round.DefendingCharCurrentHP = _statuses[_defending.Guid].CurrentZyw;
         round.DefendingCharID = _defending.Guid;
         int roll = _diceRolls.D100();
-        if (_attacking.WW + _wwMod < roll) { 
+        if (_attacking.WW + _statuses[_attacking.Guid].AttackMod < roll) { 
             round.HitSuccessFailReason = HitSuccessMissReason.Miss; 
             return round; }
 
@@ -171,16 +180,18 @@ public class MeleeAttack(Character attacking, Character defending, IDiceRolls di
         int healthTaken = damage - _defending.Wt - armour + armourMod;
         if (healthTaken > 0)
         {
-            _defending.CurrentZyw -= healthTaken;
-            round.DefendingCharCurrentHP = _defending.CurrentZyw;
+            _statuses[_defending.Guid].CurrentZyw -= healthTaken;
+            round.DefendingCharCurrentHP = _statuses[_defending.Guid].CurrentZyw;
         }
     }
 }
-public class RangedAttack(Character attacking, Character defending, IDiceRolls diceRolls) : Attack(attacking, defending, diceRolls, 0)
+public class RangedAttack : Attack
 {
+    public RangedAttack(Character attacking, Character defending, IDiceRolls diceRolls, Dictionary<Guid, CharacterStatus> statuses)
+        : base(attacking, defending, diceRolls, statuses){}
     public override Round MakeAttack(IEquipmentItem? attackingHand)
     {
-        Round round = new Round();
+        Round round = new();
         RangedWeapon attackingWeapon = (RangedWeapon)attackingHand!;
         int roll = _diceRolls.D100();
         if (_attacking.US >= roll)
@@ -196,7 +207,7 @@ public class RangedAttack(Character attacking, Character defending, IDiceRolls d
         int healthTaken = damage - _defending.Wt - armour;
         if (healthTaken > 0)
         {
-            _defending.CurrentZyw -= healthTaken;
+            _statuses[_defending.Guid].CurrentZyw -= healthTaken;
         }
     }
 

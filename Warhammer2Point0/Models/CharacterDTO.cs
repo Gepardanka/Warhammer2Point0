@@ -97,7 +97,6 @@ public class CharacterDTO
             Abilities = characterDTO.Abilities,
             Skills = characterDTO.DodgeValue == null ? [] :
                 new Dictionary<CharacterSkill, int> { { CharacterSkill.Unik, (int)characterDTO.DodgeValue } },
-            CurrentZyw = characterDTO.Health
         };
     }
 }

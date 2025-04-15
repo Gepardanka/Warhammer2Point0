@@ -5,10 +5,14 @@ namespace WarhammerFightSimulator.Tests;
 public class RoundTests{
     [Fact]
     public void UnarmedRoundMiss(){
-        Models.Character defending = new(){CurrentZyw = 1, Guid = Guid.NewGuid()};
+        Models.Character defending = new(){Guid = Guid.NewGuid()};
         Models.Character attacking = new() {WW = 40};
+        Dictionary<Guid, Models.CharacterStatus> statuses = new(){
+            {attacking.Guid, new Models.CharacterStatus{}},
+            {defending.Guid, new Models.CharacterStatus{CurrentZyw = 1}},
+        };
         FakeDiceRolls fakeDiceRolls = new(){IntsD100 = [90]};
-        Attack attack = new UnarmedAttack(attacking, defending, fakeDiceRolls, 0);
+        Attack attack = new UnarmedAttack(attacking, defending, fakeDiceRolls, statuses);
 
 
         Models.Round expectedRound = new Models.Round{
@@ -23,10 +27,14 @@ public class RoundTests{
 
     [Fact]
     public void UnarmedRoundHit(){
-        Models.Character defending = new(){CurrentZyw = 1, Wt = 1, Guid = Guid.NewGuid()};
+        Models.Character defending = new(){Wt = 1, Guid = Guid.NewGuid()};
         Models.Character attacking = new(){WW = 40, S = 4};
+        Dictionary<Guid, Models.CharacterStatus> statuses = new(){
+            {attacking.Guid, new Models.CharacterStatus{}},
+            {defending.Guid, new Models.CharacterStatus{CurrentZyw = 1}},
+        };
         FakeDiceRolls fakeDiceRolls = new(){IntsD100 = [30], IntsD10 = [2]};
-        Attack attack = new UnarmedAttack(attacking, defending, fakeDiceRolls, 0);
+        Attack attack = new UnarmedAttack(attacking, defending, fakeDiceRolls, statuses);
 
 
         Models.Round expectedRound = new Models.Round{
@@ -42,18 +50,20 @@ public class RoundTests{
     [Fact]
     public void UnarmedRoundParry(){
         Models.Character defending = new(){
-            CurrentZyw = 1, 
+            Guid = Guid.NewGuid(),
             Wt = 1,
             WW = 90,
             Hands = new Models.Hands{
                 RightHand = new Models.MeleeWeapon{
                     Modifier = 0}},
-            IsParring = true,
-            Guid = Guid.NewGuid(),
             };
         Models.Character attacking = new(){WW = 90, S = 4};
+        Dictionary<Guid, Models.CharacterStatus> statuses = new(){
+            {attacking.Guid, new Models.CharacterStatus{}},
+            {defending.Guid, new Models.CharacterStatus{CurrentZyw = 1, IsParring = true}},
+        };
         FakeDiceRolls fakeDiceRolls = new(){IntsD100 = [10, 10], IntsD10 = [2]};
-        UnarmedAttack unarmedAttack = new(attacking, defending, fakeDiceRolls, 0);
+        UnarmedAttack unarmedAttack = new(attacking, defending, fakeDiceRolls, statuses);
 
         Models.Round expectedRound = new Models.Round{
             AttackingWeaponName = Models.WeaponName.Unarmed,
@@ -68,18 +78,20 @@ public class RoundTests{
     [Fact]
      public void UnarmedRuondFailedParry(){
         Models.Character defending = new(){
-            CurrentZyw = 1, 
+            Guid = Guid.NewGuid(),
             Wt = 1,
             WW = 90,
             Hands = new Models.Hands{
                 RightHand = new Models.MeleeWeapon{
                     Modifier = 0}},
-            Guid = Guid.NewGuid(),
-            IsParring = true
             };
         Models.Character attacking = new(){WW = 90, S = 4};
+        Dictionary<Guid, Models.CharacterStatus> statuses = new(){
+            {attacking.Guid, new Models.CharacterStatus{}},
+            {defending.Guid, new Models.CharacterStatus{CurrentZyw = 1, IsParring = true}},
+        };
         FakeDiceRolls fakeDiceRolls = new(){IntsD100 = [10, 91], IntsD10 = [2]};
-        UnarmedAttack unarmedAttack = new(attacking, defending, fakeDiceRolls, 0);
+        UnarmedAttack unarmedAttack = new(attacking, defending, fakeDiceRolls, statuses);
 
         Models.Round expectedRound = new Models.Round{
             AttackingWeaponName = Models.WeaponName.Unarmed,
@@ -94,15 +106,18 @@ public class RoundTests{
     [Fact]
     public void UnarmedDodge(){
         Models.Character defending = new(){
-            CurrentZyw = 1, 
+            Guid = Guid.NewGuid(), 
             Wt = 1,
             Zr = 90,
-            Guid = Guid.NewGuid(),
             Skills = new Dictionary<Models.CharacterSkill, int>{{Models.CharacterSkill.Unik, 0}}
             };
         Models.Character attacking = new(){WW = 90, S = 4};
+        Dictionary<Guid, Models.CharacterStatus> statuses = new(){
+            {attacking.Guid, new Models.CharacterStatus{}},
+            {defending.Guid, new Models.CharacterStatus{CurrentZyw = 1}},
+        };
         FakeDiceRolls fakeDiceRolls = new(){IntsD100 = [10, 10], IntsD10 = [2]};
-        UnarmedAttack unarmedAttack = new(attacking, defending, fakeDiceRolls, 0);
+        UnarmedAttack unarmedAttack = new(attacking, defending, fakeDiceRolls, statuses);
 
         Models.Round expectedRound = new Models.Round{
             AttackingWeaponName = Models.WeaponName.Unarmed,
@@ -117,15 +132,18 @@ public class RoundTests{
     [Fact]
     public void UnarmedFailedDodge(){
         Models.Character defending = new(){
-            CurrentZyw = 1, 
+            Guid = Guid.NewGuid(), 
             Wt = 1,
             Zr = 90,
-            Guid = Guid.NewGuid(),
             Skills = new Dictionary<Models.CharacterSkill, int>{{Models.CharacterSkill.Unik, 0}}
             };
         Models.Character attacking = new(){WW = 90, S = 4};
+        Dictionary<Guid, Models.CharacterStatus> statuses = new(){
+            {attacking.Guid, new Models.CharacterStatus{}},
+            {defending.Guid, new Models.CharacterStatus{CurrentZyw = 1}},
+        };
         FakeDiceRolls fakeDiceRolls = new(){IntsD100 = [10, 91], IntsD10 = [2]};
-        UnarmedAttack unarmedAttack = new(attacking, defending, fakeDiceRolls, 0);
+        UnarmedAttack unarmedAttack = new(attacking, defending, fakeDiceRolls, statuses);
 
         Models.Round expectedRound = new Models.Round{
             AttackingWeaponName = Models.WeaponName.Unarmed,

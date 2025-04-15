@@ -9,10 +9,14 @@ public class RangedTests{
             Hands = new Models.Hands{RightHand = new Models.RangedWeapon{Modifier = 3}}
         };
         Models.Character defending = new(){
-            CurrentZyw = 1
+            Guid = Guid.NewGuid(),
         };
-        Services.RangedAttack attack= new(attacking, defending, fakeDiceRolls);
+        Dictionary<Guid, Models.CharacterStatus> statuses = new(){
+            {attacking.Guid, new Models.CharacterStatus{}},
+            {defending.Guid, new Models.CharacterStatus{CurrentZyw = 1}},
+        };
+        Services.RangedAttack attack= new(attacking, defending, fakeDiceRolls, statuses);
         attack.MakeAttack(attacking.Hands.RightHand);
-        Assert.Equal(1, defending.CurrentZyw);
+        Assert.Equal(1, statuses[defending.Guid].CurrentZyw);
     }
 }

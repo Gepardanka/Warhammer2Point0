@@ -17,7 +17,7 @@ public enum CharacterAbility {
 };
 
 public class Character {
-    public Guid Guid { get; set; }
+    public Guid Guid { get; set; } = Guid.NewGuid();
     public string BigURL { get; set; } = "";
     public string SmallURL { get; set; } = "";
     public string Name { get; set; } = "";
@@ -38,12 +38,6 @@ public class Character {
     public List<CharacterAbility> Abilities { get; set; } = [];
 
     public Dictionary<CharacterSkill, int> Skills { get; set; } = [];
-    public int CurrentZyw { get; set; }
-    public int AttacksCount { get; set; }
-
-    public bool IsParring { get; set; } = false;
-    public bool IsDodging { get; set; } = true;
-
 }
 
 public enum CharacterTeam{

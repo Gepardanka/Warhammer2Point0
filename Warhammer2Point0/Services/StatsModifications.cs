@@ -66,13 +66,13 @@ public static class StatsModifications
         }
         return -20;
     }
-    public static void BlyskawicznyBlok(Character attacking)
+    public static void BlyskawicznyBlok(Character attacking, CharacterStatus characterStatus)
     {
         if (attacking.Abilities.Contains(CharacterAbility.BlyskawicznyBlok)
             && attacking.A >= 3)
         {
-            attacking.IsParring = true;
-            attacking.AttacksCount --;
+            characterStatus.IsParring = true;
+            characterStatus.AttacksCount --;
         }
     }
 }

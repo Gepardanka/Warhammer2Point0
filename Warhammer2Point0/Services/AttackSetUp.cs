@@ -2,61 +2,64 @@ using WarhammerFightSimulator.Models;
 
 namespace WarhammerFightSimulator.Services;
 public interface IAttackSetUp{
-    public void ChooseAttack(Character attacking, Character defending, int wwMod);
+    public void ChooseAttack();
 }
 
-public class AttackSetUp : IAttackSetUp{
-    private readonly IDiceRolls _diceRolls;
-    private RoundHistory _roundHistory;
-    public AttackSetUp(IDiceRolls diceRolls, RoundHistory roundHistory){
-        _diceRolls = diceRolls;
-        _roundHistory = roundHistory;
-    }
-    public void ChooseAttack(Character attacking, Character defending, int wwMod)
-    {
-        if (attacking.Hands.RightHand == null && attacking.Hands.LeftHand == null)
-        {
-            UnarmedLogic(attacking, defending, wwMod);
-        }
-        else if (attacking.Hands.RightHand != null){
-            if(attacking.Hands.RightHand.EquipmentItemType == EquipmentItemType.MeleeWeapon){
-                MeleeLogic(attacking, defending, wwMod, (MeleeWeapon)attacking.Hands.RightHand);
-            }
-        }
-        else if(attacking.Hands.LeftHand!= null){            
-            if(attacking.Hands.LeftHand.EquipmentItemType == EquipmentItemType.MeleeWeapon){
-                wwMod += 
-                    StatsModifications.LeftHandMod((MeleeWeapon)attacking.Hands.LeftHand, attacking);                
-                MeleeLogic(attacking, defending, wwMod, (MeleeWeapon)attacking.Hands.LeftHand);
-            }
-        }
-    }
-    private void MeleeLogic(Character attacking, Character defending, int wwMod, MeleeWeapon attackingWeapon){
-        attacking.IsDodging = true;
-        attacking.AttacksCount = attacking.A;
+public class AttackSetUp(IDiceRolls diceRolls, RoundHistory roundHistory, Dictionary<Guid, CharacterStatus> statuses, Character attacking, Character defending) : IAttackSetUp{
+    private readonly IDiceRolls _diceRolls = diceRolls;
+    private readonly RoundHistory _roundHistory = roundHistory;
+    readonly Dictionary<Guid, CharacterStatus> _statuses = statuses;
+    readonly Character _attacking = attacking;
+    readonly Character _defending = defending;
 
-        if (attacking.A > 1)
+    public void ChooseAttack()
+    {
+        if (_attacking.Hands.RightHand == null && _attacking.Hands.LeftHand == null)
         {
-            StatsModifications.BlyskawicznyBlok(attacking);
-            DoAttack(new MeleeAttack(attacking, defending, _diceRolls, wwMod), attackingWeapon, attacking.AttacksCount);
+            UnarmedLogic();
+        }
+        else if (_attacking.Hands.RightHand != null){
+            if(_attacking.Hands.RightHand.EquipmentItemType == EquipmentItemType.MeleeWeapon){
+                MeleeLogic((MeleeWeapon)_attacking.Hands.RightHand);
+            }
+        }
+        else if(_attacking.Hands.LeftHand!= null){            
+            if(_attacking.Hands.LeftHand.EquipmentItemType == EquipmentItemType.MeleeWeapon){
+                _statuses[_attacking.Guid].AttackMod += 
+                    StatsModifications.LeftHandMod((MeleeWeapon)_attacking.Hands.LeftHand, _attacking);                
+                MeleeLogic((MeleeWeapon)_attacking.Hands.LeftHand);
+            }
+        }
+    }
+    private void MeleeLogic(MeleeWeapon _attackingWeapon){
+        
+        _statuses[_attacking.Guid].IsDodging = true;
+        _statuses[_attacking.Guid].AttacksCount = _attacking.A;
+
+        if (_attacking.A > 1)
+        {
+            StatsModifications.BlyskawicznyBlok(_attacking, _statuses[_attacking.Guid]);
+            DoAttack(new MeleeAttack(
+                _attacking, _defending, _diceRolls, _statuses), _attackingWeapon);
             
         }
         else
         {
-            DoAttack(new MeleeAttack(attacking, defending, _diceRolls, wwMod), attackingWeapon, attacking.AttacksCount);
-            attacking.IsParring = true;
+            DoAttack(new MeleeAttack(_attacking, _defending, _diceRolls, _statuses), _attackingWeapon);
+            _statuses[_attacking.Guid].IsParring = true;
         }
     }
 
-    private void UnarmedLogic(Character attacking, Character defending, int wwMod){
-        attacking.IsDodging = true;
-        DoAttack(new UnarmedAttack(attacking, defending, _diceRolls, wwMod),
-            null, attacking.A);
+    private void UnarmedLogic(){
+        _statuses[_attacking.Guid].IsDodging = true;
+        _statuses[_attacking.Guid].AttacksCount = _attacking.A;
+        DoAttack(new UnarmedAttack(_attacking, _defending, _diceRolls, _statuses),
+            null);
     }
 
-    private void DoAttack(Attack attackType, Weapon? attackingWeapon, int attacks){
-        for(int i = 0; i < attacks; i++){
-            _roundHistory.Rounds.Add(attackType.MakeAttack(attackingWeapon));
+    private void DoAttack(Attack attackType, Weapon? _attackingWeapon){
+        for(int i = 0; i < _statuses[_attacking.Guid].AttacksCount; i++){
+            _roundHistory.Rounds.Add(attackType.MakeAttack(_attackingWeapon));
         }
     }
 }
